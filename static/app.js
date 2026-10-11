@@ -149,7 +149,7 @@ function setupBlueprintActions() {
       elements.refVideoInput.value ? `Link Ref: ${elements.refVideoInput.value}` : ""
     ].filter(Boolean).join(" | ");
 
-    appendConsoleLog("API", `Remodifying blueprint for input: "${rawInput}"...`);
+    appendConsoleLog("PLAN", `Polishing lesson plan for "${rawInput}"...`);
 
     try {
       const resp = await fetch("/api/topics/remodify", {
@@ -160,15 +160,15 @@ function setupBlueprintActions() {
       const data = await resp.json();
       if (data.refined) {
         renderBlueprint(data.refined);
-        appendConsoleLog("OK", `Generated blueprint: "${data.refined.suggested_title}"`);
+        appendConsoleLog("OK", `Lesson plan ready: "${data.refined.suggested_title}"`);
       }
     } catch (err) {
-      appendConsoleLog("ERR", `Failed to remodify topic: ${err}`);
+      appendConsoleLog("ERR", `Could not refine topic: ${err}`);
     }
   });
 
   elements.suggestBtn.addEventListener("click", async () => {
-    appendConsoleLog("API", "Fetching trending high-RPM topics...");
+    appendConsoleLog("TRENDS", "Looking up top trending AI tools...");
     try {
       const resp = await fetch("/api/topics/suggest", {
         method: "POST",
@@ -188,10 +188,10 @@ function setupBlueprintActions() {
           potential_rpm: item.potential_rpm || "$14 - $28",
           key_points: item.key_points || []
         });
-        appendConsoleLog("OK", `Suggested: ${item.tool_name} (${item.suggested_title})`);
+        appendConsoleLog("OK", `Picked trending tool: ${item.tool_name} (${item.suggested_title})`);
       }
     } catch (err) {
-      appendConsoleLog("ERR", `Failed to fetch suggestions: ${err}`);
+      appendConsoleLog("ERR", `Could not fetch suggestions: ${err}`);
     }
   });
 }
@@ -221,6 +221,19 @@ function renderBlueprint(bp) {
 // -----------------------------------------------------------------------------
 // 3. Pipeline Generation & Job Monitor
 // -----------------------------------------------------------------------------
+function getFriendlyStageName(stage) {
+  switch (stage) {
+    case 1: return "Step 1 of 6: Researching Topic & Lesson Plan...";
+    case 2: return "Step 2 of 6: Writing 1,500-Word Educational Script...";
+    case 3: return "Step 3 of 6: Recording Studio Voiceover...";
+    case 4: return "Step 4 of 6: Designing 1080p Lesson Slides...";
+    case 5: return "Step 5 of 6: Assembling Video & Mixing Music...";
+    case 6: return "Step 6 of 6: Creating 3 Thumbnail Covers & SEO...";
+    case 7: return "🎉 Video Ready! Loading Your Video Player...";
+    default: return `Working on Step ${stage}...`;
+  }
+}
+
 function setupPipelineLauncher() {
   elements.startPipelineBtn.addEventListener("click", async () => {
     const rawInput = elements.topicInput.value.trim();
@@ -232,10 +245,10 @@ function setupPipelineLauncher() {
     const privacy = uploadMode === "auto_unlisted" ? "unlisted" : "private";
 
     elements.startPipelineBtn.disabled = true;
-    elements.startPipelineBtn.textContent = "⏳ Generating Video Pipeline...";
+    elements.startPipelineBtn.innerHTML = "⏳ Making Your Video... (Please wait 1-2 mins)";
 
-    appendConsoleLog("LAUNCH", `Starting pipeline for "${toolName}" [Voice: ${voiceAvatar}, Upload: ${uploadMode}]`);
-    updateProgress(10, "Stage 1: Topic Research & Blueprints");
+    appendConsoleLog("START", `Starting video creation for "${toolName}" [Voice: ${voiceAvatar}]`);
+    updateProgress(10, getFriendlyStageName(1));
     setStageActive(1);
 
     try {
@@ -260,7 +273,7 @@ function setupPipelineLauncher() {
     } catch (err) {
       appendConsoleLog("ERR", `Launch failed: ${err}`);
       elements.startPipelineBtn.disabled = false;
-      elements.startPipelineBtn.textContent = "🚀 Launch Autonomous 7-Stage Pipeline";
+      elements.startPipelineBtn.innerHTML = "🎬 Create My Video Now (One-Click)";
     }
   });
 }
@@ -274,20 +287,20 @@ function startJobPolling(jobId) {
       const job = await resp.json();
 
       if (job.status === "running") {
-        updateProgress(job.progress_percent || 30, `Stage ${job.stage || 2}: In Progress`);
+        updateProgress(job.progress_percent || 30, getFriendlyStageName(job.stage || 2));
         setStageActive(job.stage || 2);
         if (job.logs && job.logs.length > 0) {
           const lastLog = job.logs[job.logs.length - 1];
-          appendConsoleLog("EXEC", lastLog);
+          appendConsoleLog("PROGRESS", lastLog);
         }
       } else if (job.status === "completed") {
         clearInterval(AppState.pollTimer);
-        updateProgress(100, "Pipeline Generation Finished!");
+        updateProgress(100, "🎉 Success! Your Video Is Completely Finished");
         setStageAllDone();
-        appendConsoleLog("SUCCESS", `Video ready: ${job.summary?.video_path || "Finished"}`);
+        appendConsoleLog("DONE", `Video ready to watch: ${job.summary?.video_path || "Finished"}`);
 
         elements.startPipelineBtn.disabled = false;
-        elements.startPipelineBtn.textContent = "🚀 Launch Another Pipeline";
+        elements.startPipelineBtn.innerHTML = "🎬 Create Another Video";
 
         // Auto switch to library to view video
         setTimeout(() => {
@@ -298,10 +311,10 @@ function startJobPolling(jobId) {
         }, 1200);
       } else if (job.status === "failed") {
         clearInterval(AppState.pollTimer);
-        updateProgress(0, "Pipeline Execution Failed");
+        updateProgress(0, "Notice: Video creation stopped");
         appendConsoleLog("ERR", `Error: ${job.error || "Unknown error"}`);
         elements.startPipelineBtn.disabled = false;
-        elements.startPipelineBtn.textContent = "🚀 Launch Autonomous 7-Stage Pipeline";
+        elements.startPipelineBtn.innerHTML = "🎬 Create My Video Now (One-Click)";
       }
     } catch (err) {
       console.warn("Polling error:", err);
@@ -497,8 +510,8 @@ async function loadTrendRadar() {
             Niche: <strong>${escapeHtml(item.niche || "AI Tools")}</strong>
           </div>
         </div>
-        <button class="btn btn-primary btn-block" style="font-size: 0.8rem; padding: 8px 12px;">
-          🚀 Load into Studio
+        <button class="btn btn-primary btn-block" style="font-size: 0.85rem; padding: 10px 14px;">
+          🎬 Create Video on This Topic
         </button>
       `;
 
@@ -574,46 +587,83 @@ function renderComplianceAudit(audit) {
 }
 
 function setupComplianceActions() {
-  elements.runLatestAuditBtn.addEventListener("click", () => {
-    loadLatestCompliance();
-  });
+  if (elements.runLatestAuditBtn) {
+    elements.runLatestAuditBtn.addEventListener("click", () => {
+      loadLatestCompliance();
+    });
+  }
 
-  elements.runCustomAuditBtn.addEventListener("click", async () => {
-    const title = elements.testTitle.value.trim();
-    const body = elements.testBody.value.trim();
-    const hasDisclosure = elements.testAiDisclosure.checked;
+  if (elements.runCustomAuditBtn) {
+    elements.runCustomAuditBtn.addEventListener("click", async () => {
+      const title = elements.testTitle.value.trim();
+      const body = elements.testBody.value.trim();
+      const hasDisclosure = elements.testAiDisclosure.checked;
 
-    try {
-      const resp = await fetch("/api/compliance/audit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: title,
-          description: body,
-          narration: body,
-          tags: ["ai", "tutorial"],
-          has_ai_disclosure: hasDisclosure
-        })
-      });
-      const data = await resp.json();
-      const audit = data.audit || {};
+      try {
+        const resp = await fetch("/api/compliance/audit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: title,
+            description: body,
+            narration: body,
+            tags: ["ai", "tutorial"],
+            has_ai_disclosure: hasDisclosure
+          })
+        });
+        const data = await resp.json();
+        const audit = data.audit || {};
 
-      elements.customAuditResults.style.display = "block";
-      elements.customAuditResults.innerHTML = `
-        <div style="padding: 14px; border-radius: 8px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-color);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong>Audit Score: ${audit.score}/100</strong>
-            <span class="rpm-badge" style="${audit.score >= 90 ? 'color: #34d399;' : 'color: #f87171;'}">${audit.status}</span>
-          </div>
-          <div style="font-size: 0.78rem; color: var(--text-muted);">
-            Passed Checks: ${audit.passed_checks ? audit.passed_checks.length : 0} | Issues: ${audit.issues ? audit.issues.length : 0}
-          </div>
-        </div>
-      `;
-    } catch (err) {
-      alert(`Audit failed: ${err}`);
-    }
-  });
+        if (elements.customAuditResults) {
+          elements.customAuditResults.style.display = "block";
+          elements.customAuditResults.innerHTML = `
+            <div style="padding: 14px; border-radius: 8px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-color);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <strong>Audit Score: ${audit.score}/100</strong>
+                <span class="rpm-badge" style="${audit.score >= 90 ? 'color: #34d399;' : 'color: #f87171;'}">${audit.status}</span>
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">
+                Passed Checks: ${audit.passed_checks ? audit.passed_checks.length : 0} | Issues: ${audit.issues ? audit.issues.length : 0}
+              </div>
+            </div>
+          `;
+        }
+      } catch (err) {
+        alert(`Audit failed: ${err}`);
+      }
+    });
+  }
+
+  // YouTube Upload button wiring
+  if (elements.libUploadBtn) {
+    elements.libUploadBtn.addEventListener("click", async () => {
+      if (!AppState.selectedProjectId) {
+        alert("Please select a completed video from the list first.");
+        return;
+      }
+      const origText = elements.libUploadBtn.innerHTML;
+      elements.libUploadBtn.disabled = true;
+      elements.libUploadBtn.innerHTML = "⏳ Uploading to YouTube...";
+      try {
+        const resp = await fetch("/api/youtube/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ project_id: AppState.selectedProjectId, privacy: "private" })
+        });
+        const data = await resp.json();
+        if (data.status === "success" || data.video_id) {
+          alert(`🎉 Successfully uploaded to YouTube! Video ID: ${data.video_id || "Done"}`);
+        } else {
+          alert(`Notice: ${data.message || data.error || "Review mode active. Check YouTube OAuth in config/client_secrets.json"}`);
+        }
+      } catch (e) {
+        alert(`Upload error: ${e}`);
+      } finally {
+        elements.libUploadBtn.disabled = false;
+        elements.libUploadBtn.innerHTML = origText;
+      }
+    });
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -734,5 +784,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  appendConsoleLog("INIT", "AI Studio Pro dashboard active at http://127.0.0.1:8501");
+  appendConsoleLog("READY", "Studio is ready! Enter an AI topic above or click 'Pick a Trending AI Tool' to start.");
 });

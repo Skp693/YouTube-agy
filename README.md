@@ -1,45 +1,45 @@
-# 🎬 AI Studio Pro — Autonomous YouTube Video Pipeline (macOS Desktop Edition)
+# 🎬 AI Video Studio — Easy YouTube Video Creator (macOS Edition)
 
-> **Build and publish high-retention 8–12 minute educational YouTube videos about AI tools completely autonomously on macOS.**
+> **Create and publish complete, high-retention 8–12 minute educational YouTube videos about AI tools in 1 click on macOS.**
 
 ---
 
-## 📸 Studio App Preview
+## 📸 Simple Studio Preview
 
-### 🎨 Studio Creator & Multimodal Blueprint Engine
-![AI Studio Pro Dashboard](assets/screenshot.png)
+### 🎨 Clean Dashboard & Visual Task Roadmap
+![AI Video Studio Dashboard](assets/screenshot.png)
 
-### 📂 In-Browser Video Player & Project Library
-![Video Library and Media Player](assets/library_screenshot.png)
+### 📂 In-Browser Video Player & 1-Click YouTube Publishing
+![Video Player and Media Library](assets/library_screenshot.png)
 
 ### 🎥 Demo Video Walkthrough
-A complete demo video demonstrating the desktop app, workflow stages, and output is available directly in this repository:
+A complete video showing the simplified desktop app in action is included directly in this repository:
 - **[Watch Demo Video (`assets/demo.mp4`)](assets/demo.mp4)**
 
 ---
 
-## ⚡ What Is This Project?
+## 🗺️ How It Works (Visual 3-Step Roadmap)
 
-**AI Studio Pro** transforms raw AI tool ideas into complete, production-ready, monetization-friendly YouTube videos. 
+The application provides a clear visual roadmap that handles the entire video production workflow automatically:
 
-From a single prompt, image wireframe, or notes link, the app:
-1. **Researches & Plans:** Designs an 8–12 minute educational blueprint with an audience retention hook.
-2. **Writes the Script:** Synthesizes an in-depth 1400–1800 word tactical masterclass tutorial.
-3. **Records the Voiceover:** Synthesizes studio-grade English narration using native macOS voices (`Daniel` / `Samantha`) with zero API costs.
-4. **Draws the Visuals:** Renders high-contrast 1080p dark-mode educational slides with structured cards and badges.
-5. **Assembles the Video:** Renders a 1080p MP4 via FFmpeg with soft ambient music ducked at `-22dB` and timed SRT subtitles.
-6. **Creates YouTube SEO & Thumbnail:** Generates high-CTR 1280x720 thumbnails, search-optimized titles, and descriptions with `00:00` chapter timestamps.
-7. **Guards YouTube Monetization:** Automatically audits content against YouTube Partner Program (YPP 2026) guidelines before review or upload.
+```
+[ 1. Pick Topic ] ➔ [ 2. Write Script ] ➔ [ 3. Record Voice ] ➔ [ 4. Lesson Slides ] ➔ [ 5. Assemble Video ] ➔ [ 6. Ready to Watch! ]
+```
+
+1. **Step 1: Enter Any Topic** — Type any AI tool (e.g., *Claude 3.7*, *ChatGPT*, *Cursor AI*) or click **"Pick a Trending AI Tool"**.
+2. **Step 2: Customize (Optional)** — Voice, camera movement, music, and subtitles are already pre-configured to the best settings. You can customize them in one click if you wish.
+3. **Step 3: Click "Create My Video Now"** — Watch the visual progress bar as the app writes the script, records the studio voiceover, draws the 1080p slides, and mixes everything together into an MP4 video.
+4. **Step 4: Watch & Publish** — Review your finished 1080p video, pick your favorite thumbnail cover from 3 styles (Tech, Minimal, Viral), copy your ready-made YouTube title and description, and upload to your channel!
 
 ---
 
 ## 🚀 How to Run the App on Mac
 
-### Option 1: Double-Click in macOS Finder (Easiest)
-Simply double-click the launcher script in Finder:
+### Option 1: Double-Click in Finder (Easiest)
+Simply double-click the launcher script in macOS Finder:
 - **[`launch_app.command`](launch_app.command)**
 
-It automatically prepares the environment, verifies FFmpeg and speech synthesis, starts the background server, and opens your browser.
+It prepares everything, starts the server, and opens your web browser automatically.
 
 ### Option 2: Terminal Launch
 ```bash
@@ -47,7 +47,7 @@ It automatically prepares the environment, verifies FFmpeg and speech synthesis,
 git clone https://github.com/Skp693/YouTube-agy.git
 cd YouTube-agy
 
-# Run the desktop app
+# Run the app
 ./run_desktop.sh
 
 # Or run with Python directly:

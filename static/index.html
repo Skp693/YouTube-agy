@@ -3,386 +3,427 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Studio Pro — Autonomous YouTube Pipeline</title>
+  <title>AI Studio — Easy YouTube Video Creator</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-  <!-- Top App Bar -->
+  <!-- Top Simple Navigation Bar -->
   <header class="app-header">
     <div class="brand-container">
       <div class="brand-logo">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
         </svg>
       </div>
       <div>
-        <h1 class="brand-title">AI Studio Pro</h1>
-        <div style="display: flex; gap: 6px; align-items: center; margin-top: 2px;">
-          <span class="brand-badge">macOS Desktop</span>
-          <span style="font-size: 0.7rem; color: var(--text-dim);">8–12 Min Autonomous Video Engine</span>
-        </div>
+        <h1 class="brand-title">AI Video Studio</h1>
+        <div class="brand-tagline">Make 8–12 Minute Educational YouTube Videos in 1 Click</div>
       </div>
     </div>
 
-    <!-- Live System Status Indicators -->
-    <div class="header-status-pills">
-      <div class="status-pill active" title="FFmpeg 9.0.2 is installed and active">
-        <span class="status-indicator"></span>
-        <span>FFmpeg: Ready</span>
-      </div>
-      <div class="status-pill active" title="Native macOS speech synthesis + afconvert active">
-        <span class="status-indicator"></span>
-        <span id="audio-engine-status">Audio: macOS Native (Daniel)</span>
-      </div>
-      <div class="status-pill active" title="YouTube Partner Program 2026 Policy Shield">
-        <span class="status-indicator"></span>
-        <span>YPP Policy Shield: Active</span>
-      </div>
-    </div>
+    <!-- Simple Navigation (3 Main Actions) -->
+    <nav class="app-nav-simple">
+      <button class="nav-tab active" data-tab="studio">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        1. Create Video
+      </button>
+      <button class="nav-tab" data-tab="library">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        2. My Videos & Player
+      </button>
+      <button class="nav-tab" data-tab="trends">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        3. Hot Topic Ideas
+      </button>
+    </nav>
 
-    <!-- Creator Profile / Auth -->
-    <div class="user-profile-button" id="open-profile-btn" title="Channel & Creator Profile">
-      <div class="profile-avatar">AI</div>
+    <!-- Creator Status & Quick Account Pill -->
+    <div class="user-profile-button" id="open-profile-btn" title="Click to view YouTube channel setup">
+      <div class="status-dot-pulse"></div>
       <div style="text-align: left;">
-        <div class="profile-name">Creator Studio Pro</div>
-        <div style="font-size: 0.65rem; color: #34d399;">● Channel Connected</div>
+        <div class="profile-name">YouTube Channel</div>
+        <div style="font-size: 0.7rem; color: #34d399; font-weight: 500;">Ready to Upload</div>
       </div>
     </div>
   </header>
 
-  <!-- Navigation Bar -->
-  <nav class="app-nav">
-    <button class="nav-tab active" data-tab="studio">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-      Studio Creator
-    </button>
-    <button class="nav-tab" data-tab="library">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-      Video Library
-    </button>
-    <button class="nav-tab" data-tab="trends">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-      Trend Radar
-    </button>
-    <button class="nav-tab" data-tab="compliance">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Monetization Shield
-    </button>
-    <button class="nav-tab" data-tab="advisor">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Model Advisor
-    </button>
-    <button class="nav-tab" data-tab="settings">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Settings
-    </button>
-  </nav>
-
-  <!-- App Main Content Container -->
+  <!-- Main Container -->
   <main class="app-container">
 
     <!-- ======================================================================= -->
-    <!-- TAB 1: STUDIO CREATOR (Main Generation Workflow) -->
+    <!-- TAB 1: CREATE VIDEO (SIMPLE, CLEAR & GUIDED) -->
     <!-- ======================================================================= -->
     <div id="pane-studio" class="tab-pane active">
-      <div class="grid-studio">
 
-        <!-- Left Column: Topic Input & Configuration -->
-        <div>
-          <!-- Section 1: Multimodal Topic Input -->
-          <div class="card">
-            <div class="card-header">
+      <!-- How This Works (Simple 4-Step Visual Guide) -->
+      <section class="how-it-works-card">
+        <div class="how-it-works-header">
+          <div class="badge-pill">Quick Start Guide</div>
+          <h2 class="section-title">How to Make Your Video in 3 Easy Steps</h2>
+          <p class="section-desc">No complicated video editing needed. The app automatically researches the topic, writes the script, records the voice, designs lesson slides, and assembles the 1080p video for you.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon">💡</div>
+            <div class="step-title">Enter Any Topic</div>
+            <div class="step-text">Type any AI tool (e.g. <em>Claude 3.7</em>, <em>ChatGPT</em>) or click "Surprise Me" to pick a trending topic.</div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon">⚙️</div>
+            <div class="step-title">Customize (Optional)</div>
+            <div class="step-text">Best voice, music, and subtitles are already set. You can change narrator or speed if you want.</div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon">🎬</div>
+            <div class="step-title">Click "Create Video"</div>
+            <div class="step-text">Watch the live visual progress bar. In 1–2 minutes, your full 1080p video is completely assembled.</div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div class="step-icon">🚀</div>
+            <div class="step-title">Watch & Publish</div>
+            <div class="step-text">Review your finished video, pick your favorite thumbnail style, and copy the SEO title and description.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visual Roadmap: Live Pipeline Stages -->
+      <section class="roadmap-card">
+        <div class="roadmap-header">
+          <div>
+            <span class="roadmap-label">Live Video Roadmap</span>
+            <div class="roadmap-title" id="current-stage-label">Status: Ready to Create Your Next Video</div>
+          </div>
+          <div class="roadmap-progress-badge" id="progress-percent">0%</div>
+        </div>
+
+        <!-- Animated Progress Track -->
+        <div class="progress-track">
+          <div id="progress-bar-fill" class="progress-fill"></div>
+        </div>
+
+        <!-- 7 Clear Visual Steps with Friendly Icons -->
+        <div class="roadmap-steps">
+          <div id="step-1" class="roadmap-step">
+            <div class="step-bubble">1</div>
+            <div class="step-info">
+              <span class="step-name">💡 Topic & Plan</span>
+              <span class="step-sub">Lesson outline</span>
+            </div>
+          </div>
+
+          <div id="step-2" class="roadmap-step">
+            <div class="step-bubble">2</div>
+            <div class="step-info">
+              <span class="step-name">✍️ Script Writing</span>
+              <span class="step-sub">1,500-word tutorial</span>
+            </div>
+          </div>
+
+          <div id="step-3" class="roadmap-step">
+            <div class="step-bubble">3</div>
+            <div class="step-info">
+              <span class="step-name">🎙️ Voiceover</span>
+              <span class="step-sub">Studio voice recording</span>
+            </div>
+          </div>
+
+          <div id="step-4" class="roadmap-step">
+            <div class="step-bubble">4</div>
+            <div class="step-info">
+              <span class="step-name">🖼️ Lesson Slides</span>
+              <span class="step-sub">1080p visual graphics</span>
+            </div>
+          </div>
+
+          <div id="step-5" class="roadmap-step">
+            <div class="step-bubble">5</div>
+            <div class="step-info">
+              <span class="step-name">🎬 Video Assembly</span>
+              <span class="step-sub">Music & pan-and-zoom</span>
+            </div>
+          </div>
+
+          <div id="step-6" class="roadmap-step">
+            <div class="step-bubble">6</div>
+            <div class="step-info">
+              <span class="step-name">🏷️ Thumbnails & SEO</span>
+              <span class="step-sub">Titles, tags & 3 covers</span>
+            </div>
+          </div>
+
+          <div id="step-7" class="roadmap-step">
+            <div class="step-bubble">7</div>
+            <div class="step-info">
+              <span class="step-name">🎉 Ready to Watch</span>
+              <span class="step-sub">Review & upload</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Two-Column Workspace -->
+      <div class="grid-studio-simple">
+
+        <!-- Left Column: Topic Entry & Options -->
+        <div class="studio-form-col">
+          
+          <!-- Card: Step 1 Enter Topic -->
+          <div class="card form-card">
+            <div class="card-header-simple">
+              <div class="step-badge">Step 1</div>
               <div>
-                <h2 class="card-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                  Multimodal Topic & Video Blueprint
-                </h2>
-                <div class="card-subtitle">Provide raw ideas, reference links, screenshots, or let the AI suggest trending topics</div>
+                <h3 class="card-title">What would you like your video to be about?</h3>
+                <div class="card-subtitle">Type any AI tool or topic you want to teach, or let the app suggest one</div>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="topic-input">Target Topic or Raw Idea (Text / Prompt / Notes)</label>
-              <textarea id="topic-input" class="form-textarea" placeholder="e.g. Claude 3.7 Artifacts: Complete hands-on masterclass building full-stack web applications with Extended Thinking toggle"></textarea>
+              <textarea id="topic-input" class="form-textarea" rows="3" placeholder="e.g. Claude 3.7 Artifacts: Complete step-by-step masterclass building web apps with interactive previews"></textarea>
             </div>
 
-            <div class="input-row">
-              <div class="form-group">
-                <label class="form-label" for="ref-image-input">Reference Image / Wireframe (Optional File Path)</label>
-                <input type="text" id="ref-image-input" class="form-input" placeholder="e.g. /Users/pattuvan/Desktop/mockup.png">
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="ref-video-input">Reference Video / Notes Link (Optional)</label>
-                <input type="text" id="ref-video-input" class="form-input" placeholder="e.g. https://claude.ai/artifacts-demo or notes">
-              </div>
-            </div>
-
-            <!-- Blueprint Action Buttons -->
-            <div class="btn-group">
+            <!-- Two Friendly One-Click Buttons -->
+            <div class="quick-action-buttons">
               <button id="remodify-btn" class="btn btn-primary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                ✨ Regenerate & Remodify Blueprint
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                ✨ Polish & Improve My Topic
               </button>
               <button id="suggest-btn" class="btn btn-secondary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                🔥 Suggest Trending Topic
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                💡 Pick a Trending AI Tool for Me
               </button>
             </div>
 
-            <!-- Real-time Blueprint Preview Box -->
-            <div id="blueprint-preview" class="blueprint-box" style="display: none;">
+            <!-- Video Lesson Plan Preview -->
+            <div id="blueprint-preview" class="blueprint-box" style="display: none; margin-top: 16px;">
               <div class="blueprint-header">
                 <div>
                   <div id="bp-title" class="blueprint-title">Video Title Preview</div>
                   <div id="bp-tool" style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Tool: Claude 3.7</div>
                 </div>
-                <div id="bp-rpm" class="rpm-badge">Est. RPM: $14 - $28</div>
+                <div id="bp-rpm" class="rpm-badge">Est. Ad Revenue: High</div>
               </div>
               <div class="blueprint-meta-row">
-                <span>⏱ Target Runtime: <strong>8–12 mins</strong></span>
-                <span>📝 Word Count: <strong>1400–1800 words</strong></span>
-                <span>🎯 Format: <strong id="bp-format">Step-by-Step Guide</strong></span>
+                <span>⏱ Length: <strong>8–12 mins</strong></span>
+                <span>📝 Words: <strong>~1,500 words</strong></span>
+                <span>🎯 Format: <strong id="bp-format">Hands-On Guide</strong></span>
               </div>
               <ul id="bp-points" class="blueprint-points">
-                <li>Key curriculum point</li>
+                <li>Hands-on lesson point</li>
               </ul>
             </div>
+
+            <!-- Optional Links / Files (Collapsible, kept clean) -->
+            <details class="advanced-details" style="margin-top: 14px;">
+              <summary class="advanced-summary">📎 Add reference link or image mockup (Optional)</summary>
+              <div class="input-row" style="margin-top: 10px;">
+                <div class="form-group">
+                  <label class="form-label" for="ref-image-input">Reference Image or Mockup File Path</label>
+                  <input type="text" id="ref-image-input" class="form-input" placeholder="e.g. /Users/pattuvan/Desktop/screenshot.png">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ref-video-input">Reference Web Link or Documentation</label>
+                  <input type="text" id="ref-video-input" class="form-input" placeholder="e.g. https://claude.ai">
+                </div>
+              </div>
+            </details>
           </div>
 
-          <!-- Section 2: Production Configuration Dropdowns -->
-          <div class="card">
-            <div class="card-header">
-              <div>
-                <h2 class="card-title">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                  Video & Audio Production Configuration
-                </h2>
-                <div class="card-subtitle">Fine-tune voice avatar, subtitle format, video resolution, and monetization rules</div>
-              </div>
-            </div>
+          <!-- Card: Step 2 Customize Video & Voice (Clean Collapsible with Best Defaults Preselected) -->
+          <div class="card form-card">
+            <details class="options-details" open>
+              <summary class="options-summary">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="step-badge">Step 2</span>
+                  <span style="font-weight: 600; font-size: 0.95rem; color: #fff;">Customize Voice & Video (Optional)</span>
+                </div>
+                <span class="summary-badge">Best Settings Selected</span>
+              </summary>
 
-            <div class="input-row">
-              <div class="form-group">
-                <label class="form-label" for="config-format">Video Structure & Format</label>
-                <select id="config-format" class="form-select">
-                  <option value="step_by_step" selected>Step-by-Step Hands-On Guide (8-12 Mins)</option>
-                  <option value="masterclass">Comprehensive Masterclass & Deep Dive</option>
-                  <option value="comparison">Head-to-Head Comparison & Benchmark</option>
-                  <option value="crash_course">Beginner Crash Course & Cheat Sheet</option>
-                  <option value="mistakes">5 Critical Mistakes to Avoid</option>
-                </select>
-              </div>
+              <div class="options-content">
+                <div class="input-row">
+                  <div class="form-group">
+                    <label class="form-label" for="config-voice">Narrator Voice</label>
+                    <select id="config-voice" class="form-select">
+                      <option value="Daniel" selected>Daniel (UK Studio Professional — Clear & Articulate)</option>
+                      <option value="Samantha">Samantha (US Natural Studio — Warm & Engaging)</option>
+                      <option value="Eddy (English (UK))">Eddy (UK Friendly & Conversational)</option>
+                      <option value="Flo (English (US))">Flo (US High Energy)</option>
+                    </select>
+                  </div>
 
-              <div class="form-group">
-                <label class="form-label" for="config-voice">Voice Avatar / Speech Synthesis</label>
-                <select id="config-voice" class="form-select">
-                  <option value="Daniel" selected>Daniel (UK Studio Professional — macOS Native)</option>
-                  <option value="Samantha">Samantha (US Natural Studio — macOS Native)</option>
-                  <option value="Eddy (English (UK))">Eddy (UK Conversational)</option>
-                  <option value="Flo (English (US))">Flo (US Engaging)</option>
-                  <option value="Google Journey">Google Cloud Journey Neural (Studio-F)</option>
-                  <option value="ElevenLabs">ElevenLabs Multilingual v2 (High Emotion)</option>
-                </select>
-              </div>
-            </div>
+                  <div class="form-group">
+                    <label class="form-label" for="config-speech-rate">Speaking Speed</label>
+                    <select id="config-speech-rate" class="form-select">
+                      <option value="165" selected>Standard (165 words/min — Balanced & Clear)</option>
+                      <option value="140">Calm Masterclass (140 words/min — Easy to follow)</option>
+                      <option value="185">Fast & Energetic (185 words/min — Dynamic YouTube style)</option>
+                    </select>
+                  </div>
+                </div>
 
-            <div class="input-row-3">
-              <div class="form-group">
-                <label class="form-label" for="config-language">Language & Dialect</label>
-                <select id="config-language" class="form-select">
-                  <option value="en-US" selected>English (United States)</option>
-                  <option value="en-GB">English (United Kingdom)</option>
-                  <option value="es-ES">Spanish (Castilian)</option>
-                  <option value="de-DE">German (Standard)</option>
-                  <option value="fr-FR">French (Standard)</option>
-                </select>
-              </div>
+                <div class="input-row">
+                  <div class="form-group">
+                    <label class="form-label" for="config-format">Video Lesson Style</label>
+                    <select id="config-format" class="form-select">
+                      <option value="step_by_step" selected>Step-by-Step Hands-On Guide (Recommended)</option>
+                      <option value="masterclass">Comprehensive Masterclass</option>
+                      <option value="crash_course">Beginner Crash Course</option>
+                      <option value="comparison">Head-to-Head Comparison</option>
+                      <option value="mistakes">5 Critical Mistakes to Avoid</option>
+                    </select>
+                  </div>
 
-              <div class="form-group">
-                <label class="form-label" for="config-subtitles">Subtitles & Captions</label>
-                <select id="config-subtitles" class="form-select">
-                  <option value="srt_sync" selected>SRT Timed File (Zero Distortion)</option>
-                  <option value="burn_in">Burned-In Modern Captions</option>
-                  <option value="minimal">Minimalist Lower-Third</option>
-                </select>
-              </div>
+                  <div class="form-group">
+                    <label class="form-label" for="config-motion">Camera Movement</label>
+                    <select id="config-motion" class="form-select">
+                      <option value="true" selected>Smooth Zoom & Pan (Keeps viewers engaged)</option>
+                      <option value="false">Static Slides (No camera movement)</option>
+                    </select>
+                  </div>
+                </div>
 
-              <div class="form-group">
-                <label class="form-label" for="config-quality">Video Quality & Framerate</label>
-                <select id="config-quality" class="form-select">
-                  <option value="1080p_30" selected>1080p Full HD (30fps High Bitrate)</option>
-                  <option value="1080p_60">1080p Full HD (60fps Fluid)</option>
-                  <option value="4k_30">4K Ultra HD (3840x2160)</option>
-                </select>
-              </div>
-            </div>
+                <div class="input-row">
+                  <div class="form-group">
+                    <label class="form-label" for="config-music">Background Music</label>
+                    <select id="config-music" class="form-select">
+                      <option value="ambient_ducked" selected>Soft & Relaxing (Automatic volume dip during speech)</option>
+                      <option value="lofi_tech">Modern Tech Lo-Fi</option>
+                      <option value="cinematic">Cinematic Focus</option>
+                      <option value="none">No Music (Narration Only)</option>
+                    </select>
+                  </div>
 
-            <div class="input-row-3">
-              <div class="form-group">
-                <label class="form-label" for="config-motion">Cinematic Motion (Ken Burns)</label>
-                <select id="config-motion" class="form-select">
-                  <option value="true" selected>Active (Subtle Pan & Zoom)</option>
-                  <option value="false">Static Slides (Standard)</option>
-                </select>
-              </div>
+                  <div class="form-group">
+                    <label class="form-label" for="config-upload-mode">What to do when done?</label>
+                    <select id="config-upload-mode" class="form-select">
+                      <option value="review" selected>Save for My Review (Recommended — Check before upload)</option>
+                      <option value="auto_private">Upload to YouTube Directly (Private Video)</option>
+                      <option value="auto_unlisted">Upload to YouTube Directly (Unlisted Video)</option>
+                    </select>
+                  </div>
+                </div>
 
-              <div class="form-group">
-                <label class="form-label" for="config-speech-rate">Voice Modulation & Rate</label>
-                <select id="config-speech-rate" class="form-select">
-                  <option value="165" selected>Dynamic & Engaging (165 WPM)</option>
-                  <option value="140">Calm Masterclass (140 WPM)</option>
-                  <option value="185">Fast-Paced Energetic (185 WPM)</option>
-                </select>
+                <!-- Hidden inputs with default best settings to preserve full pipeline compatibility -->
+                <input type="hidden" id="config-language" value="en-US">
+                <input type="hidden" id="config-subtitles" value="srt_sync">
+                <input type="hidden" id="config-quality" value="1080p_30">
+                <input type="hidden" id="config-broll" value="true">
               </div>
-
-              <div class="form-group">
-                <label class="form-label" for="config-broll">Live Web B-Roll Capture</label>
-                <select id="config-broll" class="form-select">
-                  <option value="true" selected>Capture Official Tool Interface</option>
-                  <option value="false">Slide Cards Only</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="input-row">
-              <div class="form-group">
-                <label class="form-label" for="config-music">Background Music Ducking</label>
-                <select id="config-music" class="form-select">
-                  <option value="ambient_ducked" selected>Soft Ambient Ducked (-22dB Voice Priority)</option>
-                  <option value="lofi_tech">Modern Tech Lo-Fi</option>
-                  <option value="cinematic">Cinematic Deep Focus</option>
-                  <option value="none">No Background Music (Voice Only)</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="config-upload-mode">Execution Mode</label>
-                <select id="config-upload-mode" class="form-select">
-                  <option value="review" selected>Review Mode (Pause Before Upload — Recommended)</option>
-                  <option value="auto_private">Full Auto Upload (Upload to Channel as Private)</option>
-                  <option value="auto_unlisted">Full Auto Upload (Upload as Unlisted)</option>
-                </select>
-              </div>
-            </div>
+            </details>
           </div>
+
         </div>
 
-        <!-- Right Column: Generation Launcher & Real-time Console Monitor -->
-        <div>
-          <!-- Giant Primary Action Button -->
-          <div style="margin-bottom: 20px;">
-            <button id="start-pipeline-btn" class="btn btn-primary btn-block btn-lg">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Launch Autonomous 7-Stage Pipeline
+        <!-- Right Column: Launch Action, Live Progress & Console -->
+        <div class="studio-action-col">
+
+          <!-- Giant Main Button -->
+          <div class="launch-action-box">
+            <button id="start-pipeline-btn" class="btn btn-primary btn-block btn-hero">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              🎬 Create My Video Now (One-Click)
             </button>
-            <div style="font-size: 0.72rem; color: var(--text-dim); text-align: center; margin-top: 8px;">
-              Executes: Research ➔ Script ➔ Voiceover ➔ 1080p Slides ➔ FFmpeg Assembly ➔ Metadata & Thumbnail
+            <div class="launch-note">
+              ⏱ Takes about 1–2 minutes. Runs completely offline on your Mac with $0 cost.
             </div>
           </div>
 
-          <!-- Live Progress & Stage Tracker Card -->
-          <div class="progress-card">
-            <div class="progress-header">
-              <span id="current-stage-label">Status: Ready to Generate</span>
-              <span id="progress-percent" style="color: #38bdf8;">0%</span>
+          <!-- YouTube Monetization Safety Badge -->
+          <div class="monetization-badge-card">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="safe-check-icon">✓</span>
+              <div>
+                <div style="font-weight: 600; font-size: 0.88rem; color: #34d399;">Safe for YouTube Monetization</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Content is checked for advertiser-friendly guidelines, original commentary & clear chapters.</div>
+              </div>
             </div>
+          </div>
 
-            <div class="progress-track">
-              <div id="progress-bar-fill" class="progress-fill"></div>
-            </div>
-
-            <div class="stage-steps">
-              <div id="step-1" class="stage-step">1. Topic</div>
-              <div id="step-2" class="stage-step">2. Script</div>
-              <div id="step-3" class="stage-step">3. Audio</div>
-              <div id="step-4" class="stage-step">4. Visuals</div>
-              <div id="step-5" class="stage-step">5. Assembly</div>
-              <div id="step-6" class="stage-step">6. Metadata</div>
-              <div id="step-7" class="stage-step">7. Review</div>
-            </div>
-
-            <div class="card-header" style="margin-bottom: 8px;">
-              <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted);">Real-Time Studio Console</span>
-              <span style="font-size: 0.68rem; color: #10b981;">● Live Stream</span>
+          <!-- Live Progress Log Window -->
+          <div class="card console-card">
+            <div class="card-header-simple" style="margin-bottom: 6px;">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">Live Progress Notes</span>
+              <span style="font-size: 0.68rem; color: #10b981;">● Active</span>
             </div>
 
             <div id="console-stream" class="console-box">
-              <div class="console-entry"><span class="console-time">[READY]</span> System initialized. Zero-cost local engine loaded.</div>
-              <div class="console-entry"><span class="console-time">[READY]</span> FFmpeg 9.0.2 verified at /opt/homebrew/bin/ffmpeg.</div>
-              <div class="console-entry"><span class="console-time">[READY]</span> Enter a topic above or pick from Trend Radar to start.</div>
+              <div class="console-entry"><span class="console-time">[READY]</span> Studio is ready. All Mac audio and video tools are working.</div>
+              <div class="console-entry"><span class="console-time">[READY]</span> Enter a topic on the left or click "Pick a Trending AI Tool" to begin!</div>
             </div>
           </div>
 
-          <!-- Quick Compliance Summary Card -->
-          <div class="card" style="margin-top: 20px;">
-            <div class="card-header">
-              <h3 class="card-title" style="font-size: 0.95rem;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Active YouTube Compliance Guard
-              </h3>
-              <span class="rpm-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">100% Monitored</span>
-            </div>
-            <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;">
-              Every generated video is automatically audited against YouTube Partner Program (YPP) policies:
-              <ul style="margin: 8px 0 0 16px;">
-                <li>Advertiser-Friendly (Zero demonetization triggers)</li>
-                <li>Synthetic Media Disclosure (Compliant AI tagging)</li>
-                <li>Educational Framing (Protected against Reused Content)</li>
-                <li>00:00 Chapter Verification (High-CTR Key Moments)</li>
-              </ul>
-            </div>
-          </div>
         </div>
 
       </div>
+
     </div>
 
     <!-- ======================================================================= -->
-    <!-- TAB 2: VIDEO LIBRARY & MEDIA INSPECTOR -->
+    <!-- TAB 2: MY VIDEOS & PLAYER -->
     <!-- ======================================================================= -->
     <div id="pane-library" class="tab-pane">
-      <div class="grid-studio">
 
-        <!-- Left Column: Video List -->
+      <!-- Simple Header for Library -->
+      <div class="library-header-bar">
         <div>
+          <h2 class="section-title">My Completed Videos</h2>
+          <p class="section-desc">Watch your finished videos, choose your favorite thumbnail cover, and copy your YouTube title and description.</p>
+        </div>
+        <button id="refresh-projects-btn" class="btn btn-secondary" style="font-size: 0.8rem;">
+          🔄 Refresh Video List
+        </button>
+      </div>
+
+      <div class="grid-studio-simple">
+
+        <!-- Left: Project Selector List -->
+        <div class="library-list-col">
           <div class="card">
-            <div class="card-header">
-              <h2 class="card-title">Generated Projects</h2>
-              <button id="refresh-projects-btn" class="btn btn-secondary" style="font-size: 0.75rem; padding: 4px 8px;">Refresh</button>
+            <div class="card-header-simple">
+              <span style="font-weight: 600; font-size: 0.9rem; color: #fff;">Saved Videos</span>
             </div>
-            <div id="projects-list-container" style="display: flex; flex-direction: column; gap: 10px;">
-              <div style="font-size: 0.8rem; color: var(--text-dim); text-align: center; padding: 20px;">Loading project library...</div>
+            <div id="projects-list-container" class="projects-scroll-list">
+              <div style="font-size: 0.8rem; color: var(--text-dim); text-align: center; padding: 24px;">Loading videos...</div>
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Media Player & SEO Inspector -->
-        <div>
+        <!-- Right: Video Player & YouTube Copy Box -->
+        <div class="library-player-col">
           <div class="card" id="project-detail-card">
-            <div class="card-header">
+            
+            <div class="card-header-simple">
               <div>
-                <h2 class="card-title" id="selected-project-title">Select a Project</h2>
-                <div class="card-subtitle" id="selected-project-meta">Inspect video, thumbnail, and YouTube metadata</div>
+                <h3 class="card-title" id="selected-project-title">Select a Video to Watch</h3>
+                <div class="card-subtitle" id="selected-project-meta">1080p Full HD Video</div>
               </div>
-              <div id="selected-project-badge" class="rpm-badge" style="display: none;">1080p Ready</div>
+              <span id="selected-project-badge" class="rpm-badge" style="display: none;">1080p Ready</span>
             </div>
 
-            <!-- Video Player -->
+            <!-- 1080p Video Player -->
             <div class="media-container" id="video-container" style="display: none;">
               <video id="library-video-player" controls preload="metadata"></video>
             </div>
 
-            <!-- Audio Player -->
+            <!-- Voiceover Audio Preview -->
             <div class="audio-player-wrapper" id="audio-container" style="display: none;">
-              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Studio Voiceover Track:</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">🎙️ Voiceover Audio Track:</div>
               <audio id="library-audio-player" controls></audio>
             </div>
 
-            <!-- Thumbnail Preview & A/B Variation Switcher -->
-            <div style="margin-bottom: 16px;">
+            <!-- Thumbnail Chooser (3 High-CTR Styles) -->
+            <div class="thumbnail-chooser-box">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div style="font-size: 0.75rem; color: var(--text-muted);">YouTube 1280x720 Thumbnail (A/B Testing Variations):</div>
+                <div style="font-size: 0.8rem; font-weight: 600; color: #fff;">Pick Your Favorite Thumbnail Cover:</div>
                 <div class="thumb-variations-group" id="thumb-variations-container">
                   <button class="thumb-var-btn active" data-var="A">Style A: Tech</button>
                   <button class="thumb-var-btn" data-var="B">Style B: Minimal</button>
@@ -392,55 +433,54 @@
               <img id="library-thumbnail-img" class="thumbnail-preview-img" src="" alt="Thumbnail preview" style="display: none;">
             </div>
 
-            <!-- YouTube SEO Title -->
-            <div class="form-group copyable-field">
-              <label class="form-label">Optimized YouTube Title</label>
-              <input type="text" id="library-yt-title" class="form-input" readonly>
-              <button class="copy-btn" data-target="library-yt-title">Copy</button>
+            <!-- YouTube Copy Box -->
+            <div class="youtube-copy-section">
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
+                  <label class="form-label" style="margin-bottom: 0;">Optimized YouTube Video Title</label>
+                  <button class="copy-btn" data-target="library-yt-title">📋 Copy Title</button>
+                </div>
+                <input type="text" id="library-yt-title" class="form-input" readonly>
+              </div>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
+                  <label class="form-label" style="margin-bottom: 0;">Video Description & Chapter Timestamps</label>
+                  <button class="copy-btn" data-target="library-yt-desc">📋 Copy Description</button>
+                </div>
+                <textarea id="library-yt-desc" class="form-textarea" style="min-height: 120px;" readonly></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Recommended Keyword Tags</label>
+                <div id="library-tags-container" class="tags-cloud"></div>
+              </div>
+
+              <!-- Upload Button -->
+              <div class="btn-group" style="margin-top: 16px;">
+                <button id="lib-upload-btn" class="btn btn-success" style="padding: 10px 18px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  🚀 Upload to YouTube Channel (Private)
+                </button>
+              </div>
             </div>
 
-            <!-- YouTube Description with Chapters -->
-            <div class="form-group copyable-field">
-              <label class="form-label">SEO Description with Chapter Timestamps</label>
-              <textarea id="library-yt-desc" class="form-textarea" style="min-height: 140px;" readonly></textarea>
-              <button class="copy-btn" data-target="library-yt-desc">Copy</button>
-            </div>
-
-            <!-- Tags -->
-            <div class="form-group">
-              <label class="form-label">SEO Keyword Tags</label>
-              <div id="library-tags-container" class="tags-cloud"></div>
-            </div>
-
-            <!-- Action buttons -->
-            <div class="btn-group" style="margin-top: 16px;">
-              <button id="lib-upload-btn" class="btn btn-success">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Upload to YouTube (Private)
-              </button>
-              <button id="lib-audit-btn" class="btn btn-secondary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Audit Compliance
-              </button>
-            </div>
           </div>
         </div>
 
       </div>
+
     </div>
 
     <!-- ======================================================================= -->
-    <!-- TAB 3: TREND RADAR & HIGH-RPM NICHES -->
+    <!-- TAB 3: HOT TOPIC IDEAS -->
     <!-- ======================================================================= -->
     <div id="pane-trends" class="tab-pane">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header-simple" style="margin-bottom: 16px;">
           <div>
-            <h2 class="card-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              High-RPM AI Tool Trend Radar (2026 Edition)
-            </h2>
-            <div class="card-subtitle">Curated high-engagement topics with verified viewer retention and ad monetization rates</div>
+            <h2 class="section-title">🔥 Trending AI Tool Video Ideas</h2>
+            <p class="section-desc">Click any card to automatically create a high-retention video on that topic.</p>
           </div>
         </div>
 
@@ -450,132 +490,18 @@
       </div>
     </div>
 
-    <!-- ======================================================================= -->
-    <!-- TAB 4: MONETIZATION & POLICY COMPLIANCE SHIELD -->
-    <!-- ======================================================================= -->
-    <div id="pane-compliance" class="tab-pane">
-      <div class="grid-studio">
-        <div>
-          <div class="card">
-            <div class="card-header">
-              <h2 class="card-title">Latest Project Audit Scorecard</h2>
-              <button id="run-latest-audit-btn" class="btn btn-secondary" style="font-size: 0.75rem;">Re-Audit</button>
-            </div>
-
-            <div class="compliance-score-circle">
-              <span id="audit-score-num" class="compliance-score-val">100</span>
-              <span id="audit-score-text" class="compliance-score-label">SAFE</span>
-            </div>
-
-            <div id="audit-checks-container">
-              <!-- Populated dynamically -->
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="card">
-            <div class="card-header">
-              <h2 class="card-title">Interactive Policy Guard Tester</h2>
-              <div class="card-subtitle">Test custom titles, descriptions, or scripts for advertiser safety</div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Title to Test</label>
-              <input type="text" id="test-title" class="form-input" value="How to Build Full Apps with Claude 3.7 Artifacts (2026 Masterclass)">
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Description / Script Excerpt to Test</label>
-              <textarea id="test-body" class="form-textarea" style="min-height: 120px;">In this complete hands-on tutorial, we explore step-by-step how to use Claude 3.7 Artifacts to build interactive React applications. 00:00 Introduction 01:30 Setup</textarea>
-            </div>
-
-            <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
-              <input type="checkbox" id="test-ai-disclosure" checked>
-              <label for="test-ai-disclosure" style="font-size: 0.8rem; color: var(--text-muted);">Include YouTube Altered / Synthetic Media AI Disclosure</label>
-            </div>
-
-            <button id="run-custom-audit-btn" class="btn btn-primary btn-block">Run Policy Compliance Audit</button>
-
-            <div id="custom-audit-results" style="margin-top: 16px; display: none;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ======================================================================= -->
-    <!-- TAB 5: AI MODEL ADVISOR -->
-    <!-- ======================================================================= -->
-    <div id="pane-advisor" class="tab-pane">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h2 class="card-title">AI Engine Architecture & Model Advisor</h2>
-            <div class="card-subtitle">Hardware, API keys, and cost-benefit breakdown for video generation</div>
-          </div>
-        </div>
-
-        <div id="model-advisor-content" style="display: flex; flex-direction: column; gap: 16px;">
-          <!-- Loaded via /api/status -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ======================================================================= -->
-    <!-- TAB 6: SETTINGS -->
-    <!-- ======================================================================= -->
-    <div id="pane-settings" class="tab-pane">
-      <div class="card" style="max-width: 700px; margin: 0 auto;">
-        <div class="card-header">
-          <h2 class="card-title">Studio & Channel Preferences</h2>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Default YouTube Privacy Status</label>
-          <select id="settings-privacy" class="form-select">
-            <option value="private" selected>Private (Manual review before publishing)</option>
-            <option value="unlisted">Unlisted (Shareable link, hidden from search)</option>
-            <option value="public">Public (Immediate live publish)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Default Audio Voice Avatar</label>
-          <select id="settings-default-voice" class="form-select">
-            <option value="Daniel" selected>Daniel (UK Studio Professional)</option>
-            <option value="Samantha">Samantha (US Natural)</option>
-            <option value="Eddy (English (UK))">Eddy (UK)</option>
-            <option value="Flo (English (US))">Flo (US)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Background Music Ducking Volume (0.00 to 0.30)</label>
-          <input type="number" id="settings-music-vol" class="form-input" min="0" max="0.30" step="0.01" value="0.08">
-          <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 4px;">Default 0.08 provides balanced ambient ducking without masking speech.</div>
-        </div>
-
-        <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
-          <input type="checkbox" id="settings-daily-review" checked>
-          <label for="settings-daily-review" style="font-size: 0.8rem; color: var(--text-muted);">Enforce periodic YouTube monetization policy checks</label>
-        </div>
-
-        <button id="save-settings-btn" class="btn btn-primary" style="margin-top: 10px;">Save Preferences</button>
-      </div>
-    </div>
-
   </main>
 
-  <!-- Creator Profile & Channel Login Modal -->
+  <!-- Creator Channel Setup Modal (Clean & Simple) -->
   <div id="profile-modal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 style="font-size: 1.1rem; font-weight: 600;">YouTube Creator Channel Setup</h3>
+        <h3 style="font-size: 1.1rem; font-weight: 600;">YouTube Channel Setup</h3>
         <button id="close-profile-btn" class="modal-close">&times;</button>
       </div>
-      <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">
-        Connect your official YouTube Data API credentials for automatic or review-based uploads.
-      </div>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">
+        To upload videos directly to your YouTube channel from this app:
+      </p>
 
       <div class="form-group">
         <label class="form-label">Client Secrets File</label>
@@ -585,16 +511,14 @@
         <label class="form-label">OAuth Token File</label>
         <input type="text" class="form-input" value="config/token.json" readonly>
       </div>
-      <div class="form-group">
-        <label class="form-label">Upload Channel Mode</label>
-        <input type="text" class="form-input" value="Default Authorized Channel" readonly>
+
+      <div style="font-size: 0.78rem; color: #94a3b8; line-height: 1.4; margin-bottom: 14px;">
+        By default, videos are created in <strong>Review Mode</strong> so you can watch them first on your Mac before publishing.
       </div>
 
-      <div class="btn-group" style="margin-top: 16px;">
-        <button class="btn btn-primary btn-block" onclick="document.getElementById('profile-modal').classList.remove('active')">
-          Done
-        </button>
-      </div>
+      <button class="btn btn-primary btn-block" onclick="document.getElementById('profile-modal').classList.remove('active')">
+        Close
+      </button>
     </div>
   </div>
 
