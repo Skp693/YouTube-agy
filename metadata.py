@@ -66,8 +66,8 @@ def render_thumbnail_pil(tool_name: str, output_path: Path, width: int = 1280, h
 
     img.save(output_path, "PNG")
 
-def render_thumbnail_bmp(tool_name: str, output_path: Path, width: int = 1280, height: int = 720) -> None:
-    """Renders high-CTR 1280x720 thumbnail with bold rasterized typography."""
+def render_thumbnail_variant_a(tool_name: str, output_path: Path, width: int = 1280, height: int = 720) -> None:
+    """Style A: Bold Tech Masterclass (High contrast navy/cyan/red)."""
     bmp_path = output_path.with_suffix(".bmp")
     row_bytes = width * 3
     padding_bytes = (4 - (row_bytes % 4)) % 4
@@ -75,13 +75,11 @@ def render_thumbnail_bmp(tool_name: str, output_path: Path, width: int = 1280, h
     image_size = stride * height
     file_size = 54 + image_size
 
-    header = bytearray()
-    header.extend(b"BM")
+    header = bytearray(b"BM")
     header.extend(struct.pack("<I", file_size))
     header.extend(struct.pack("<H", 0))
     header.extend(struct.pack("<H", 0))
     header.extend(struct.pack("<I", 54))
-
     header.extend(struct.pack("<I", 40))
     header.extend(struct.pack("<i", width))
     header.extend(struct.pack("<i", height))
@@ -94,24 +92,21 @@ def render_thumbnail_bmp(tool_name: str, output_path: Path, width: int = 1280, h
     header.extend(struct.pack("<I", 0))
     header.extend(struct.pack("<I", 0))
 
-    dark_bgr = bytes([25, 15, 10])        # Dark navy base
-    red_bgr = bytes([68, 68, 239])        # Vibrant red
-    yellow_bgr = bytes([21, 204, 250])    # Bright golden yellow
-    cyan_bgr = bytes([248, 189, 56])      # Tech cyan
-    white_bgr = bytes([255, 255, 255])    # Pure white
-    blue_bgr = bytes([246, 130, 59])      # Accent blue
-    card_bgr = bytes([45, 30, 20])        # Card background
+    dark_bgr = bytes([25, 15, 10])
+    red_bgr = bytes([68, 68, 239])
+    yellow_bgr = bytes([21, 204, 250])
+    cyan_bgr = bytes([248, 189, 56])
+    white_bgr = bytes([255, 255, 255])
+    blue_bgr = bytes([246, 130, 59])
+    card_bgr = bytes([45, 30, 20])
 
     pixel_buffer = bytearray(image_size)
-
-    # 1. Fill base dark navy background
     for y in range(height):
         row_offset = y * stride
         for x in range(width):
             px = row_offset + (x * 3)
             pixel_buffer[px : px + 3] = dark_bgr
 
-    # Helper to draw filled rectangle
     def fill_rect(x1: int, y1: int, x2: int, y2: int, color: bytes) -> None:
         for y in range(max(0, y1), min(height, y2)):
             inv_y = (height - 1) - y
@@ -120,36 +115,24 @@ def render_thumbnail_bmp(tool_name: str, output_path: Path, width: int = 1280, h
                 px = row_offset + (x * 3)
                 pixel_buffer[px : px + 3] = color
 
-    # Helper to draw rect outline
     def outline_rect(x1: int, y1: int, x2: int, y2: int, color: bytes, thickness: int = 4) -> None:
         fill_rect(x1, y1, x2, y1 + thickness, color)
         fill_rect(x1, y2 - thickness, x2, y2, color)
         fill_rect(x1, y1, x1 + thickness, y2, color)
         fill_rect(x2 - thickness, y1, x2, y2, color)
 
-    # 2. Top Red Accent Banner
     fill_rect(0, 0, width, 16, red_bgr)
-
-    # 3. Outer Decorative Frame
     outline_rect(40, 40, width - 40, height - 40, blue_bgr, thickness=4)
-
-    # 4. Eyebrow Badge (Red box with bold white text)
     fill_rect(90, 80, 420, 145, red_bgr)
     draw_text_bmp(pixel_buffer, "STEP-BY-STEP", x=115, y=98, color_bgr=white_bgr, scale=4, width=width, height=height)
 
-    # 5. Massive Bold Headline (Tool Name)
     clean_tool = tool_name[:20].upper()
     draw_text_bmp(pixel_buffer, clean_tool, x=90, y=180, color_bgr=white_bgr, scale=6, width=width, height=height)
-
-    # 6. Striking Subtitle in Bright Yellow
     draw_text_bmp(pixel_buffer, "FULL 2026 GUIDE", x=90, y=285, color_bgr=yellow_bgr, scale=6, width=width, height=height)
 
-    # 7. Bottom Feature Pill
     fill_rect(90, 400, 680, 480, card_bgr)
     outline_rect(90, 400, 680, 480, cyan_bgr, thickness=3)
     draw_text_bmp(pixel_buffer, "ZERO TO HERO • COMPLETE MASTERCLASS", x=115, y=428, color_bgr=cyan_bgr, scale=3, width=width, height=height)
-
-    # 8. Bottom Tags / Badges
     draw_text_bmp(pixel_buffer, "4K ULTRA HD • 100% PRACTICAL GUIDE", x=90, y=540, color_bgr=white_bgr, scale=3, width=width, height=height)
 
     with open(bmp_path, "wb") as f:
@@ -162,6 +145,142 @@ def render_thumbnail_bmp(tool_name: str, output_path: Path, width: int = 1280, h
     except Exception:
         import shutil
         shutil.copy(bmp_path, output_path)
+
+def render_thumbnail_variant_b(tool_name: str, output_path: Path, width: int = 1280, height: int = 720) -> None:
+    """Style B: Minimalist Pro (Slate gray with emerald green badge)."""
+    bmp_path = output_path.with_suffix(".bmp")
+    row_bytes = width * 3
+    padding_bytes = (4 - (row_bytes % 4)) % 4
+    stride = row_bytes + padding_bytes
+    image_size = stride * height
+    file_size = 54 + image_size
+
+    header = bytearray(b"BM")
+    header.extend(struct.pack("<I", file_size))
+    header.extend(struct.pack("<H", 0))
+    header.extend(struct.pack("<H", 0))
+    header.extend(struct.pack("<I", 54))
+    header.extend(struct.pack("<I", 40))
+    header.extend(struct.pack("<i", width))
+    header.extend(struct.pack("<i", height))
+    header.extend(struct.pack("<H", 1))
+    header.extend(struct.pack("<H", 24))
+    header.extend(struct.pack("<I", 0))
+    header.extend(struct.pack("<I", image_size))
+    header.extend(struct.pack("<i", 2835))
+    header.extend(struct.pack("<i", 2835))
+    header.extend(struct.pack("<I", 0))
+    header.extend(struct.pack("<I", 0))
+
+    slate_bgr = bytes([35, 25, 20])
+    emerald_bgr = bytes([129, 185, 16])
+    white_bgr = bytes([255, 255, 255])
+    gold_bgr = bytes([50, 215, 250])
+
+    pixel_buffer = bytearray(image_size)
+    for y in range(height):
+        row_offset = y * stride
+        for x in range(width):
+            px = row_offset + (x * 3)
+            pixel_buffer[px : px + 3] = slate_bgr
+
+    def fill_rect(x1: int, y1: int, x2: int, y2: int, color: bytes) -> None:
+        for y in range(max(0, y1), min(height, y2)):
+            inv_y = (height - 1) - y
+            row_offset = inv_y * stride
+            for x in range(max(0, x1), min(width, x2)):
+                px = row_offset + (x * 3)
+                pixel_buffer[px : px + 3] = color
+
+    fill_rect(0, 0, width, 18, emerald_bgr)
+    fill_rect(90, 90, 480, 150, emerald_bgr)
+    draw_text_bmp(pixel_buffer, "PRO WORKFLOW • 2026", x=115, y=108, color_bgr=white_bgr, scale=4, width=width, height=height)
+
+    clean_tool = tool_name[:20].upper()
+    draw_text_bmp(pixel_buffer, clean_tool, x=90, y=190, color_bgr=white_bgr, scale=6, width=width, height=height)
+    draw_text_bmp(pixel_buffer, "TACTICAL DEEP DIVE", x=90, y=295, color_bgr=gold_bgr, scale=5, width=width, height=height)
+    draw_text_bmp(pixel_buffer, "SAVE 10+ HOURS WEEKLY • ZERO TO HERO", x=90, y=430, color_bgr=white_bgr, scale=3, width=width, height=height)
+
+    with open(bmp_path, "wb") as f:
+        f.write(header)
+        f.write(pixel_buffer)
+
+    try:
+        import subprocess
+        subprocess.run(["sips", "-s", "format", "png", str(bmp_path), "--out", str(output_path)], check=True, capture_output=True)
+    except Exception:
+        import shutil
+        shutil.copy(bmp_path, output_path)
+
+def render_thumbnail_variant_c(tool_name: str, output_path: Path, width: int = 1280, height: int = 720) -> None:
+    """Style C: Viral High-Contrast Urgent (Bright warning yellow/red for max mobile CTR)."""
+    bmp_path = output_path.with_suffix(".bmp")
+    row_bytes = width * 3
+    padding_bytes = (4 - (row_bytes % 4)) % 4
+    stride = row_bytes + padding_bytes
+    image_size = stride * height
+    file_size = 54 + image_size
+
+    header = bytearray(b"BM")
+    header.extend(struct.pack("<I", file_size))
+    header.extend(struct.pack("<H", 0))
+    header.extend(struct.pack("<H", 0))
+    header.extend(struct.pack("<I", 54))
+    header.extend(struct.pack("<I", 40))
+    header.extend(struct.pack("<i", width))
+    header.extend(struct.pack("<i", height))
+    header.extend(struct.pack("<H", 1))
+    header.extend(struct.pack("<H", 24))
+    header.extend(struct.pack("<I", 0))
+    header.extend(struct.pack("<I", image_size))
+    header.extend(struct.pack("<i", 2835))
+    header.extend(struct.pack("<i", 2835))
+    header.extend(struct.pack("<I", 0))
+    header.extend(struct.pack("<I", 0))
+
+    pure_black = bytes([10, 10, 10])
+    bright_yellow = bytes([0, 235, 255])
+    bright_red = bytes([30, 30, 240])
+    white_bgr = bytes([255, 255, 255])
+
+    pixel_buffer = bytearray(image_size)
+    for y in range(height):
+        row_offset = y * stride
+        for x in range(width):
+            px = row_offset + (x * 3)
+            pixel_buffer[px : px + 3] = pure_black
+
+    def fill_rect(x1: int, y1: int, x2: int, y2: int, color: bytes) -> None:
+        for y in range(max(0, y1), min(height, y2)):
+            inv_y = (height - 1) - y
+            row_offset = inv_y * stride
+            for x in range(max(0, x1), min(width, x2)):
+                px = row_offset + (x * 3)
+                pixel_buffer[px : px + 3] = color
+
+    fill_rect(0, 0, width, 24, bright_red)
+    fill_rect(90, 80, 520, 155, bright_red)
+    draw_text_bmp(pixel_buffer, "NEW 2026 UPDATE!", x=115, y=102, color_bgr=white_bgr, scale=4, width=width, height=height)
+
+    clean_tool = tool_name[:20].upper()
+    draw_text_bmp(pixel_buffer, clean_tool, x=90, y=185, color_bgr=bright_yellow, scale=6, width=width, height=height)
+    draw_text_bmp(pixel_buffer, "DO THIS FIRST", x=90, y=295, color_bgr=white_bgr, scale=6, width=width, height=height)
+    draw_text_bmp(pixel_buffer, "DONT MAKE THESE MISTAKES", x=90, y=430, color_bgr=bright_yellow, scale=4, width=width, height=height)
+
+    with open(bmp_path, "wb") as f:
+        f.write(header)
+        f.write(pixel_buffer)
+
+    try:
+        import subprocess
+        subprocess.run(["sips", "-s", "format", "png", str(bmp_path), "--out", str(output_path)], check=True, capture_output=True)
+    except Exception:
+        import shutil
+        shutil.copy(bmp_path, output_path)
+
+def render_thumbnail_bmp(tool_name: str, output_path: Path, width: int = 1280, height: int = 720) -> None:
+    """Default fallback calling Variant A."""
+    render_thumbnail_variant_a(tool_name, output_path, width, height)
 
 def generate_metadata_and_thumbnail(
     project_id: str,
@@ -277,26 +396,43 @@ def generate_metadata_and_thumbnail(
         "chapters": chapters
     }
 
-    # Save JSON metadata
+    # 6. Generate 3 distinct 1280x720 Thumbnail Image variations for A/B testing
+    thumbnail_path = settings.THUMBNAILS_DIR / f"{project_id}_thumbnail.png"
+    thumb_a = settings.THUMBNAILS_DIR / f"{project_id}_thumb_A.png"
+    thumb_b = settings.THUMBNAILS_DIR / f"{project_id}_thumb_B.png"
+    thumb_c = settings.THUMBNAILS_DIR / f"{project_id}_thumb_C.png"
+
+    # Render Variation A (Bold Tech Masterclass)
+    render_thumbnail_variant_a(tool_name, thumb_a)
+    # Render Variation B (Minimalist Pro)
+    render_thumbnail_variant_b(tool_name, thumb_b)
+    # Render Variation C (Viral High-Contrast)
+    render_thumbnail_variant_c(tool_name, thumb_c)
+
+    # Set default active thumbnail to Variation A
+    import shutil
+    shutil.copy(thumb_a, thumbnail_path)
+
+    metadata_payload["thumbnail_variations"] = {
+        "A": {"name": "Bold Tech Masterclass", "file": thumb_a.name, "path": str(thumb_a)},
+        "B": {"name": "Minimalist Pro", "file": thumb_b.name, "path": str(thumb_b)},
+        "C": {"name": "Viral High-Contrast", "file": thumb_c.name, "path": str(thumb_c)}
+    }
+
+    # Save JSON metadata with variations
     metadata_json_path = settings.METADATA_DIR / f"{project_id}_metadata.json"
     with open(metadata_json_path, "w", encoding="utf-8") as f:
         json.dump(metadata_payload, f, indent=2)
 
-    # 6. Generate 1280x720 Thumbnail Image
-    thumbnail_path = settings.THUMBNAILS_DIR / f"{project_id}_thumbnail.png"
-    if HAS_PIL:
-        render_thumbnail_pil(tool_name, thumbnail_path)
-    else:
-        render_thumbnail_bmp(tool_name, thumbnail_path)
-
     logger.info(f"Saved metadata to {metadata_json_path}")
-    logger.info(f"Saved thumbnail to {thumbnail_path}")
+    logger.info(f"Generated 3 thumbnail A/B variations: {thumb_a.name}, {thumb_b.name}, {thumb_c.name}")
 
     return {
         "project_id": project_id,
         "title": title,
         "metadata_json_path": str(metadata_json_path),
         "thumbnail_path": str(thumbnail_path),
+        "thumbnail_variations": metadata_payload["thumbnail_variations"],
         "chapters_count": len(chapters)
     }
 

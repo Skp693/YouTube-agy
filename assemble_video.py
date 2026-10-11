@@ -99,7 +99,8 @@ def assemble_video(
     project_id: str,
     script_data: Optional[Dict[str, Any]] = None,
     timing_data: Optional[Dict[str, Any]] = None,
-    scenes_data: Optional[Dict[str, Any]] = None
+    scenes_data: Optional[Dict[str, Any]] = None,
+    ken_burns: bool = True
 ) -> Dict[str, Any]:
     """Assembles video from visuals, voiceover, music, and subtitles.
     
@@ -108,6 +109,7 @@ def assemble_video(
         script_data: Optional script dictionary.
         timing_data: Optional timing dictionary.
         scenes_data: Optional scenes dictionary.
+        ken_burns: If True, applies slow cinematic zoom & pan motion.
         
     Returns:
         Assembly results dictionary.
@@ -153,8 +155,10 @@ def assemble_video(
     ffmpeg_bin = shutil.which("ffmpeg")
     render_script_path = project_video_dir / f"{project_id}_render.sh"
 
+    # Dynamic Ken Burns Pan & Zoom filter
+    motion_filter = "zoompan=z='min(zoom+0.00015,1.05)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1920x1080:fps=30" if ken_burns else "scale=1920:1080"
+
     # Build standard FFmpeg execution arguments
-    # Filter complex to loop music and duck it under voiceover
     if bg_music and bg_music.exists():
         ffmpeg_cmd = [
             "ffmpeg", "-y",
@@ -162,8 +166,8 @@ def assemble_video(
             "-i", str(master_audio),
             "-stream_loop", "-1", "-i", str(bg_music.resolve()),
             "-filter_complex",
-            f"[2:a]volume={music_vol}[bg];[1:a][bg]amix=inputs=2:duration=first[aout]",
-            "-map", "0:v:0",
+            f"[0:v]{motion_filter}[vout];[2:a]volume={music_vol}[bg];[1:a][bg]amix=inputs=2:duration=first[aout]",
+            "-map", "[vout]",
             "-map", "[aout]",
             "-c:v", "libx264", "-preset", "medium", "-crf", "20",
             "-pix_fmt", "yuv420p",
@@ -176,6 +180,7 @@ def assemble_video(
             "ffmpeg", "-y",
             "-f", "concat", "-safe", "0", "-i", str(concat_txt),
             "-i", str(master_audio),
+            "-vf", motion_filter,
             "-c:v", "libx264", "-preset", "medium", "-crf", "20",
             "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-b:a", "192k",

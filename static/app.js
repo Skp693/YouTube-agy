@@ -39,6 +39,9 @@ const elements = {
   configLanguage: document.getElementById("config-language"),
   configSubtitles: document.getElementById("config-subtitles"),
   configQuality: document.getElementById("config-quality"),
+  configMotion: document.getElementById("config-motion"),
+  configSpeechRate: document.getElementById("config-speech-rate"),
+  configBroll: document.getElementById("config-broll"),
   configMusic: document.getElementById("config-music"),
   configUploadMode: document.getElementById("config-upload-mode"),
   
@@ -244,7 +247,9 @@ function setupPipelineLauncher() {
           angle: angle,
           auto_upload: autoUpload,
           privacy: privacy,
-          voice_avatar: voiceAvatar
+          voice_avatar: voiceAvatar,
+          ken_burns: elements.configMotion?.value === "true",
+          speaking_rate: parseInt(elements.configSpeechRate?.value || "165")
         })
       });
       const data = await resp.json();
@@ -418,6 +423,27 @@ async function loadProjectDetails(projectId) {
 
     elements.libraryThumbnailImg.src = `/media/thumbnail/${projectId}`;
     elements.libraryThumbnailImg.style.display = "block";
+
+    // Thumbnail A/B testing variation switcher
+    document.querySelectorAll(".thumb-var-btn").forEach((btn) => {
+      btn.onclick = async () => {
+        document.querySelectorAll(".thumb-var-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const variation = btn.getAttribute("data-var");
+        elements.libraryThumbnailImg.src = `/media/thumbnail/${projectId}?v=${variation}&t=${Date.now()}`;
+
+        try {
+          await fetch(`/api/project/${projectId}/set_thumbnail`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ variation })
+          });
+          appendConsoleLog("THUMB", `Activated Thumbnail Variation ${variation} for Project ${projectId}`);
+        } catch (e) {
+          console.warn("Failed to set thumbnail variation:", e);
+        }
+      };
+    });
 
     // Text fields
     elements.libraryYtTitle.value = meta.title || "";

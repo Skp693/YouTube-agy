@@ -66,5 +66,22 @@
       "timestamp_seconds": 545.02,
       "timestamp_formatted": "09:05"
     }
-  ]
+  ],
+  "thumbnail_variations": {
+    "A": {
+      "name": "Bold Tech Masterclass",
+      "file": "20261011_144800_thumb_A.png",
+      "path": "/Users/pattuvan/Youtube-agy/thumbnails/20261011_144800_thumb_A.png"
+    },
+    "B": {
+      "name": "Minimalist Pro",
+      "file": "20261011_144800_thumb_B.png",
+      "path": "/Users/pattuvan/Youtube-agy/thumbnails/20261011_144800_thumb_B.png"
+    },
+    "C": {
+      "name": "Viral High-Contrast",
+      "file": "20261011_144800_thumb_C.png",
+      "path": "/Users/pattuvan/Youtube-agy/thumbnails/20261011_144800_thumb_C.png"
+    }
+  }
 }

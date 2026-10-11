@@ -103,7 +103,12 @@ def synthesize_with_elevenlabs(text: str, output_path: Path) -> Optional[float]:
         logger.warning(f"ElevenLabs TTS call failed ({e}).")
         return None
 
-def synthesize_macos_speech(text: str, output_path: Path, voice: str = "Daniel") -> Optional[float]:
+def synthesize_macos_speech(
+    text: str,
+    output_path: Path,
+    voice: str = "Daniel",
+    rate_wpm: Optional[int] = None
+) -> Optional[float]:
     """Synthesizes high-quality natural spoken English speech using macOS say + afconvert."""
     import subprocess
     import shutil
@@ -115,8 +120,11 @@ def synthesize_macos_speech(text: str, output_path: Path, voice: str = "Daniel")
 
     temp_aiff = output_path.with_suffix(".aiff")
     try:
-        # Synthesize via say command with consistent professional English voice
-        cmd_say = [say_bin, "-v", voice, "-o", str(temp_aiff), text]
+        # Synthesize via say command with consistent professional English voice and rate
+        cmd_say = [say_bin, "-v", voice]
+        if rate_wpm:
+            cmd_say.extend(["-r", str(rate_wpm)])
+        cmd_say.extend(["-o", str(temp_aiff), text])
         subprocess.run(cmd_say, check=True, capture_output=True)
 
         # Convert AIFF to standard 16-bit 24kHz Mono WAV
@@ -211,7 +219,8 @@ def concatenate_wav_files(input_paths: List[Path], output_path: Path) -> float:
 def generate_voiceover(
     script_data: Dict[str, Any],
     project_id: Optional[str] = None,
-    voice_name: Optional[str] = None
+    voice_name: Optional[str] = None,
+    speaking_rate: Optional[int] = None
 ) -> Dict[str, Any]:
     """Generates audio voiceovers and precise timing file for all script sections.
     
@@ -219,6 +228,7 @@ def generate_voiceover(
         script_data: Script dictionary containing sections.
         project_id: Project identifier.
         voice_name: Optional voice avatar (e.g. Daniel, Samantha).
+        speaking_rate: Optional speech rate in words per minute (e.g. 140, 165, 185).
         
     Returns:
         Voiceover results containing paths, durations, and timing details.
@@ -229,9 +239,10 @@ def generate_voiceover(
     project_audio_dir.mkdir(parents=True, exist_ok=True)
 
     chosen_voice = voice_name or os.getenv("VOICE_AVATAR", "Daniel")
+    rate_wpm = speaking_rate or int(os.getenv("VOICE_RATE_WPM", "165"))
 
     sections = script_data.get("sections", [])
-    logger.info(f"Synthesizing voiceover for {len(sections)} sections with voice '{chosen_voice}' (Project: {project_id})...")
+    logger.info(f"Synthesizing voiceover for {len(sections)} sections with voice '{chosen_voice}' @ {rate_wpm} WPM (Project: {project_id})...")
 
     section_audio_files: List[Path] = []
     timing_records: List[Dict[str, Any]] = []
@@ -262,7 +273,7 @@ def generate_voiceover(
 
         # 3. Try native macOS speech synthesis (say + afconvert)
         if duration is None:
-            duration = synthesize_macos_speech(narration, output_wav, voice=chosen_voice)
+            duration = synthesize_macos_speech(narration, output_wav, voice=chosen_voice, rate_wpm=rate_wpm)
 
         # 4. Fallback to harmonic generator if all else fails
         if duration is None:

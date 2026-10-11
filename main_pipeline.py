@@ -44,7 +44,9 @@ def run_pipeline(
     auto_upload: bool = False,
     privacy: Optional[str] = None,
     project_id: Optional[str] = None,
-    voice_avatar: Optional[str] = None
+    voice_avatar: Optional[str] = None,
+    ken_burns: bool = True,
+    speaking_rate: Optional[int] = None
 ) -> Dict[str, Any]:
     """Runs the complete YouTube generation pipeline.
     
@@ -100,7 +102,8 @@ def run_pipeline(
     voice_res = voiceover.generate_voiceover(
         script_data=script_res,
         project_id=project_id,
-        voice_name=voice_avatar
+        voice_name=voice_avatar,
+        speaking_rate=speaking_rate
     )
     logger.info(
         f"Voiceover complete: {voice_res['total_duration_sec']:.2f}s "
@@ -122,6 +125,15 @@ def run_pipeline(
     )
     logger.info(f"Generated {visuals_res['total_scenes']} visual scenes for video timeline.")
 
+    # Optional: Capture Live Web Screencast B-Roll
+    try:
+        from src.utils.browser_recorder import capture_web_broll
+        broll_dir = settings.IMAGES_DIR / project_id
+        capture_web_broll(topic_res["tool_name"], broll_dir)
+        logger.info(f"Captured live web B-roll for {topic_res['tool_name']}")
+    except Exception as e:
+        logger.warning(f"B-roll capture skipped: {e}")
+
     # --------------------------------------------------------------------------
     # STAGE 5: Video Assembly (Voice + Slides + Ducked Music + Captions)
     # --------------------------------------------------------------------------
@@ -133,7 +145,8 @@ def run_pipeline(
         project_id=project_id,
         script_data=script_res,
         timing_data=timing_data,
-        scenes_data=scenes_data
+        scenes_data=scenes_data,
+        ken_burns=ken_burns
     )
     logger.info(f"Video assembly finished -> {assembly_res['final_video_path']}")
 

@@ -218,6 +218,33 @@
               </div>
             </div>
 
+            <div class="input-row-3">
+              <div class="form-group">
+                <label class="form-label" for="config-motion">Cinematic Motion (Ken Burns)</label>
+                <select id="config-motion" class="form-select">
+                  <option value="true" selected>Active (Subtle Pan & Zoom)</option>
+                  <option value="false">Static Slides (Standard)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="config-speech-rate">Voice Modulation & Rate</label>
+                <select id="config-speech-rate" class="form-select">
+                  <option value="165" selected>Dynamic & Engaging (165 WPM)</option>
+                  <option value="140">Calm Masterclass (140 WPM)</option>
+                  <option value="185">Fast-Paced Energetic (185 WPM)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="config-broll">Live Web B-Roll Capture</label>
+                <select id="config-broll" class="form-select">
+                  <option value="true" selected>Capture Official Tool Interface</option>
+                  <option value="false">Slide Cards Only</option>
+                </select>
+              </div>
+            </div>
+
             <div class="input-row">
               <div class="form-group">
                 <label class="form-label" for="config-music">Background Music Ducking</label>
@@ -352,9 +379,16 @@
               <audio id="library-audio-player" controls></audio>
             </div>
 
-            <!-- Thumbnail Preview -->
+            <!-- Thumbnail Preview & A/B Variation Switcher -->
             <div style="margin-bottom: 16px;">
-              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">YouTube 1280x720 Thumbnail:</div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="font-size: 0.75rem; color: var(--text-muted);">YouTube 1280x720 Thumbnail (A/B Testing Variations):</div>
+                <div class="thumb-variations-group" id="thumb-variations-container">
+                  <button class="thumb-var-btn active" data-var="A">Style A: Tech</button>
+                  <button class="thumb-var-btn" data-var="B">Style B: Minimal</button>
+                  <button class="thumb-var-btn" data-var="C">Style C: Viral</button>
+                </div>
+              </div>
               <img id="library-thumbnail-img" class="thumbnail-preview-img" src="" alt="Thumbnail preview" style="display: none;">
             </div>
 

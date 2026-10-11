@@ -68,18 +68,37 @@ Once running, open your browser at:
 
 ### 2. Video & Audio Production Configuration
 - **Video Format:** Step-by-Step Guide, Comprehensive Masterclass, Head-to-Head Comparison, Beginner Crash Course, 5 Mistakes to Avoid.
-- **Voice Avatar:** `Daniel` (UK Studio Professional), `Samantha` (US Natural), `Eddy` (UK Conversational), `Flo` (US Engaging), Google Journey Neural, ElevenLabs.
+- **Voice Avatar & Pacing:** `Daniel` (UK Studio Professional), `Samantha` (US Natural), `Eddy` (UK Conversational), `Flo` (US Engaging).
+- **Voice Modulation:** 140 WPM (Deliberate), 165 WPM (Balanced Standard), 185 WPM (Fast / Dynamic).
+- **Cinematic Motion:** Ken Burns Pan & Zoom (slow cinematic optical breathing to maximize audience retention).
+- **Live Web B-Roll:** Headless Chrome screencasting of featured AI tool websites and dashboards.
 - **Language:** English (US / UK), Spanish, German, French.
 - **Subtitles:** Timed `.SRT` files (zero distortion), Burned-in modern captions, Clean lower-third.
 - **Video Quality:** 1080p Full HD (30fps / 60fps fluid), 4K Ultra HD.
 - **Background Music Ducking:** Soft ambient ducked (-22dB voice priority), Lo-Fi, Cinematic, or Voice Only.
 - **Execution Mode:** Review Mode (pause before upload — default), Full Auto Private, Full Auto Unlisted.
 
-### 3. Strict Audio-Video Synchronization
+### 3. Dynamic Ken Burns Cinematic Motion
+- Smooth pan-and-zoom optical camera motion via FFmpeg `zoompan` filter (`zoompan=z='min(zoom+0.00015,1.05)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'`).
+- Eliminates static slide fatigue and sustains viewer retention across 8–12 minute technical masterclasses.
+
+### 4. Thumbnail A/B Testing Engine (High-CTR Styles)
+- Automatically renders 3 distinct aesthetic variations for each project:
+  - **Style A (Bold Tech):** High-contrast neon frame, bold typography, and tactical benefit badges.
+  - **Style B (Minimalist Pro):** Clean dark graphite aesthetic with high-readability typography.
+  - **Style C (Viral High-Contrast):** Vibrant gradient header banner and maximum click-through punch.
+- Interactive live switcher in the web dashboard allows creators to preview and select the winner with instant backend persistence.
+
+### 5. Automated Web B-Roll Screencasts
+- Built-in headless Chrome browser engine (`src/utils/browser_recorder.py`) that captures live product pages and dashboards.
+- Automatically transforms snapshots into 1080p pan-and-scan B-roll video clips.
+- Procedural zero-crash fallback for air-gapped or offline runs.
+
+### 6. Strict Audio-Video Synchronization
 - Visual slide timelines are calculated directly from synthesized audio frame headers (`timing.json`) down to millisecond precision.
 - Zero content drift, zero pacing mismatches, and zero audio-video lag.
 
-### 4. YouTube Monetization & Policy Compliance Shield (YPP 2026)
+### 7. YouTube Monetization & Policy Compliance Shield (YPP 2026)
 Every video is pre-flight audited before publishing:
 - **Advertiser-Friendly Check:** Flags prohibited or demonetization keywords (e.g. *hack*, *crack*, *bypass paywall*) and auto-replaces them with ad-friendly phrasing.
 - **Reused Content Guard:** Enforces high original commentary thresholds and tactical step-by-step guidance.
@@ -87,9 +106,10 @@ Every video is pre-flight audited before publishing:
 - **Chapter Timestamps:** Verifies millisecond-accurate `00:00` start markers for Google Video Key Moments.
 - **Child Safety:** Confirms COPPA compliance (`selfDeclaredMadeForKids: false`).
 
-### 5. In-Browser Media Player & Inspector
+### 8. In-Browser Media Player & Inspector
 - Stream and scrub 1080p MP4 videos with HTTP byte-range seeking.
 - Play studio voiceover tracks and inspect high-CTR 1280x720 thumbnails.
+- Interactive **Thumbnail A/B Switcher** (`Style A: Tech`, `Style B: Minimal`, `Style C: Viral`).
 - One-click copy for YouTube SEO titles, descriptions with chapter timestamps, and tags.
 - Direct **"Upload to YouTube (Private)"** button.
 
@@ -111,6 +131,10 @@ YouTube-agy/
 │   ├── style.css                 # Dark-mode styling with Inter/SF Pro typography
 │   └── app.js                    # Client-side state, REST API calls, and video streaming
 │
+├── src/
+│   └── utils/
+│       └── browser_recorder.py   # Headless Chrome screencaster for live web B-roll
+│
 ├── desktop_server.py             # Multi-threaded HTTP server with range streaming
 ├── launch_app.command            # Double-clickable macOS launcher
 ├── run_desktop.sh                # Terminal launcher script
@@ -123,14 +147,17 @@ YouTube-agy/
 ├── script_writer.py              # Stage 2: 1400-1800 word tactical screenplay
 ├── voiceover.py                  # Stage 3: Studio voiceover synthesis & audio timing
 ├── visuals.py                    # Stage 4: 1080p educational slide graphics
-├── assemble_video.py             # Stage 5: FFmpeg assembly & music ducking
-├── metadata.py                   # Stage 6: SEO titles, chapters & 1280x720 thumbnails
+├── assemble_video.py             # Stage 5: FFmpeg assembly, Ken Burns motion & music ducking
+├── metadata.py                   # Stage 6: SEO titles, chapters & 3-variant thumbnail A/B engine
 ├── youtube_uploader.py           # Stage 7: YouTube Data API v3 upload
 │
 ├── videos/
 │   └── 20261011_144800_final.mp4 # Full 10:02 1080p video from latest run
 ├── thumbnails/
-│   └── 20261011_144800_thumbnail.png # 1280x720 High-CTR thumbnail
+│   ├── 20261011_144800_thumbnail.png # Default active 1280x720 thumbnail
+│   ├── 20261011_144800_thumb_A.png   # Variant A: Bold Tech Neon
+│   ├── 20261011_144800_thumb_B.png   # Variant B: Minimalist Pro
+│   └── 20261011_144800_thumb_C.png   # Variant C: Viral High-Contrast
 ├── metadata/
 │   └── 20261011_144800_metadata.json # Verified SEO title, description & chapters
 ├── scripts/

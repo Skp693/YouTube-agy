@@ -72,4 +72,5 @@ logs/*
 *.swo
 .DS_Store
 Thumbs.db
+*.bmp
 scratch/

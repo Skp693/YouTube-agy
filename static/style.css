@@ -740,3 +740,34 @@ audio {
   font-size: 1.2rem;
   cursor: pointer;
 }
+
+/* Thumbnail A/B Variations */
+.thumb-variations-group {
+  display: flex;
+  gap: 6px;
+}
+
+.thumb-var-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.thumb-var-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.thumb-var-btn.active {
+  background: linear-gradient(135deg, #06b6d4, #2563eb);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.35);
+}

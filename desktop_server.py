@@ -117,6 +117,19 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
             self._send_json({"audit": audit})
             return
 
+        if path.startswith("/api/project/") and path.endswith("/set_thumbnail"):
+            project_id = path.replace("/api/project/", "").replace("/set_thumbnail", "").strip()
+            variation = body.get("variation", "A")
+            target_var = settings.THUMBNAILS_DIR / f"{project_id}_thumb_{variation}.png"
+            active_thumb = settings.THUMBNAILS_DIR / f"{project_id}_thumbnail.png"
+            if target_var.exists():
+                import shutil
+                shutil.copy(target_var, active_thumb)
+                self._send_json({"status": "updated", "variation": variation})
+            else:
+                self.send_error(404, "Thumbnail variation not found")
+            return
+
         if path == "/api/pipeline/start":
             self._handle_start_pipeline(body)
             return
@@ -177,7 +190,12 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
             file_path = settings.VIDEOS_DIR / f"{media_id}_final.mp4"
             content_type = "video/mp4"
         elif media_type == "thumbnail":
-            file_path = settings.THUMBNAILS_DIR / f"{media_id}_thumbnail.png"
+            query = parse_qs(urlparse(self.path).query)
+            variation = query.get("v", [None])[0]
+            if variation and variation in ["A", "B", "C"]:
+                file_path = settings.THUMBNAILS_DIR / f"{media_id}_thumb_{variation}.png"
+            if not file_path or not file_path.exists():
+                file_path = settings.THUMBNAILS_DIR / f"{media_id}_thumbnail.png"
             content_type = "image/png"
         elif media_type == "audio":
             file_path = settings.AUDIO_DIR / media_id / "full_voiceover.wav"
@@ -313,6 +331,8 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
         auto_upload = bool(body.get("auto_upload", False))
         privacy = body.get("privacy", "private")
         voice_avatar = body.get("voice_avatar", "Daniel")
+        ken_burns = bool(body.get("ken_burns", True))
+        speaking_rate = int(body.get("speaking_rate", 165))
 
         job_id = f"job_{int(time.time())}"
         ACTIVE_JOBS[job_id] = {
@@ -323,7 +343,7 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
             "stage_name": "Topic Selection",
             "progress_percent": 15,
             "start_time": time.time(),
-            "logs": [f"Pipeline initiated for {tool_name} with voice '{voice_avatar}'"]
+            "logs": [f"Pipeline initiated for {tool_name} with voice '{voice_avatar}' @ {speaking_rate} WPM (Motion: {'Ken Burns' if ken_burns else 'Static'})"]
         }
 
         def worker():
@@ -340,7 +360,9 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
                     angle=angle,
                     auto_upload=auto_upload,
                     privacy=privacy,
-                    voice_avatar=voice_avatar
+                    voice_avatar=voice_avatar,
+                    ken_burns=ken_burns,
+                    speaking_rate=speaking_rate
                 )
 
                 job["status"] = "completed"
