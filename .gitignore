@@ -1,0 +1,75 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+client_secret*.json
+token.json
+token.pickle
+
+# Pipeline generated output (keep directories via .gitkeep, ignore runtime files)
+topics/*
+!topics/.gitkeep
+!topics/*20261011_144800*
+scripts/*
+!scripts/.gitkeep
+!scripts/*20261011_144800*
+audio/*
+!audio/.gitkeep
+!audio/music/.gitkeep
+!audio/20261011_144800
+!audio/20261011_144800/**
+images/*
+!images/.gitkeep
+!images/20261011_144800
+!images/20261011_144800/**
+videos/*
+!videos/.gitkeep
+!videos/*20261011_144800*
+thumbnails/*
+!thumbnails/.gitkeep
+!thumbnails/*20261011_144800*
+metadata/*
+!metadata/.gitkeep
+!metadata/*20261011_144800*
+logs/*
+!logs/.gitkeep
+
+# IDEs and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+scratch/

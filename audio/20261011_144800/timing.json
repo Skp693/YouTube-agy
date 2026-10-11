@@ -1,0 +1,90 @@
+{
+  "project_id": "20261011_144800",
+  "tool_name": "Claude 3.7 Artifacts",
+  "total_duration_sec": 602.9,
+  "total_duration_minutes": 10.05,
+  "voice_used": "en-US-Journey-F",
+  "sections": [
+    {
+      "section_id": 1,
+      "title": "The End of Chatbot Copy-Pasting: Why Claude 3.7 Artifacts Changes Everything",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_01.wav",
+      "start_time_sec": 0.0,
+      "duration_sec": 68.89,
+      "end_time_sec": 68.89,
+      "narration": "If you've been using AI chatbots over the past two years, you know the single most frustrating bottleneck: you ask for a piece of code, a landing page, or a data visualization, and the model dumps a massive wall of text directly into your chat stream. You then have to copy that code, paste it into an external editor, set up a local server, debug syntax errors, and switch between three different windows just to see if it even works. Today, that archaic workflow is officially dead. In this complete masterclass, we are diving deep into Claude 3.7 Artifacts. Claude doesn't just talk to you; it opens a dedicated, interactive execution window right alongside your conversation, allowing you to build, test, and iterate on full-stack web applications, live interactive dashboards, and visual diagrams in real time. In this step-by-step guide, you will learn how to set up your workspace, harness Claude 3.7's new hybrid reasoning engine, build a real production-grade app from scratch, and turn these skills into high-margin client deliverables. Let's get straight to work."
+    },
+    {
+      "section_id": 2,
+      "title": "What Exactly Are Claude Artifacts & What Can They Render?",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_02.wav",
+      "start_time_sec": 68.89,
+      "duration_sec": 61.61,
+      "end_time_sec": 130.5,
+      "narration": "Before we write our first prompt, let's understand how Artifacts function under the hood. When Claude generates a substantial piece of standalone content\u2014typically over fifteen lines of code, a complex diagram, or an architectural document\u2014it isolates that content into a dedicated window on the right side of your screen called an Artifact. What can Artifacts actually execute? First, full React applications styled with Tailwind CSS, running live in an isolated client-side sandbox. You can click buttons, toggle states, sort tables, and trigger animations instantly. Second, raw HTML, CSS, and modern JavaScript for standalone web widgets. Third, vector graphics using scalable SVG. And fourth, complex architectural diagrams using Mermaid notation. Crucially, the conversation remains active on the left, while your living asset stays persistent on the right. You no longer lose your work in an endless scroll of chat history."
+    },
+    {
+      "section_id": 3,
+      "title": "Step 1: Setting Up Claude Projects & Project Knowledge",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_03.wav",
+      "start_time_sec": 130.5,
+      "duration_sec": 63.57,
+      "end_time_sec": 194.07,
+      "narration": "Let's set up your environment like a professional. First, head over to claude.ai and ensure you are using Claude 3.7 Sonnet. While you can generate artifacts in standard chats, power users always organize their work inside Claude Projects. Click on Projects in the left navigation sidebar and create a new project. Why are Projects essential? Because they provide two massive superpowers: Project Custom Instructions and Project Knowledge. In the Custom Instructions panel, define your design preferences once and for all: specify your brand color palette, mandate clean modular React components with Lucide icons, and instruct Claude to always prioritize mobile-responsive layouts. Next, upload your project knowledge files. Claude allows you to upload up to two hundred thousand tokens of reference material\u2014such as your design tokens, API specifications, or database schemas. This ensures every single artifact Claude generates matches your exact technical architecture without repetitive prompting."
+    },
+    {
+      "section_id": 4,
+      "title": "Step 2: Prompting with Claude 3.7 Extended Thinking for Deep Architecture",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_04.wav",
+      "start_time_sec": 194.07,
+      "duration_sec": 88.22,
+      "end_time_sec": 282.29,
+      "narration": "Now let's build our first production project. Here is where Claude 3.7 introduces a breakthrough capability: Hybrid Reasoning. At the bottom of your prompt box, you will find the Extended Thinking toggle. For simple tasks, standard mode is lightning fast. But when building complex, interactive software artifacts, always toggle Extended Thinking on. This prompts the model to generate an internal cognitive scratchpad\u2014planning out the component tree, state management, edge cases, and user interactions before writing a single line of code. Let's look at our exact prompt formula. Never say 'build me a dashboard.' Instead, formulate your prompt with three layers: Role, Architecture, and State. For example: 'You are an expert senior frontend engineer. Build a comprehensive SaaS Analytics Dashboard in React with Tailwind CSS. Include four interactive KPI cards with percentage trends, a filterable revenue chart, a date range dropdown, client-side search across customer accounts, and an instant toggle for dark mode. Ensure all sample data is rich, realistic, and properly typed. Include smooth hover transitions on every interactive card and realistic chart tooltips.' Watch how Claude reasons through the state variables, organizes clean functional hooks, and within seconds, renders a gorgeous, production-grade application on your right-hand pane."
+    },
+    {
+      "section_id": 5,
+      "title": "Step 3: Iterative In-Browser Testing & Surgical Code Refinement",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_05.wav",
+      "start_time_sec": 282.29,
+      "duration_sec": 66.86,
+      "end_time_sec": 349.15,
+      "narration": "Once your artifact is rendered, do not leave the screen. Test it immediately! Click on the tabs, open the dropdowns, switch between light and dark mode, and verify how the UI responds on different simulated screen sizes. Notice the two tabs at the top of the artifact window: Preview and Code. While the Preview tab lets you click and test, the Code tab displays clean, syntax-highlighted React with zero obfuscation. This is where the magic of Artifacts happens. Suppose you want to modify a specific component. In legacy chatbots, asking for an edit would re-generate hundreds of lines of code and often introduce hallucinations or break existing features. With Claude Artifacts, use targeted surgical prompts. You can write: 'In the KPI metrics card, add a sparkline chart showing seven-day momentum and format the currency with compact notations.' Claude identifies the exact component inside the artifact, updates only the relevant logic, and refreshes your live preview instantly. You can see your changes live without a single terminal command or local build error."
+    },
+    {
+      "section_id": 6,
+      "title": "Step 4: Multi-Artifact Workflows & One-Click Production Deployment",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_06.wav",
+      "start_time_sec": 349.15,
+      "duration_sec": 56.02,
+      "end_time_sec": 405.17,
+      "narration": "Once your prototype is dialed in, how do you get it into production? Claude Artifacts provides multiple export options designed for seamless developer workflows. At the bottom right of the artifact window, you have two primary buttons: Copy Code and Download. Clicking Download saves a clean standalone JSX or HTML file directly to your machine. But here is the power move: Multi-Artifact Chaining. Within the same conversation, you can ask Claude: 'Now generate a backend Express API route in Node.js that serves the exact data schema required by this React artifact.' Claude will generate a second distinct artifact containing your backend endpoint. You can toggle between multiple artifacts using the version slider at the top of the window, allowing you to review your entire full-stack architecture before exporting it directly into your GitHub repository or deploying it to platforms like Vercel and Netlify."
+    },
+    {
+      "section_id": 7,
+      "title": "Pro Tips & Critical Gotchas That Break Your Artifacts",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_07.wav",
+      "start_time_sec": 405.17,
+      "duration_sec": 72.35,
+      "end_time_sec": 477.52,
+      "narration": "Let's cover the vital rules to avoid frustration and code breakage. Mistake number one is the 'Monolithic Artifact Trap.' If you try to build an entire operating system or a ten-page web application in a single prompt, the output will exceed token limits and get truncated mid-render. Always build modularly: create your dashboard core first, then add subsequent views as separate artifacts. Mistake number two is external library hallucination. Claude's React environment comes pre-loaded with Lucide React icons, Tailwind CSS, and standard Recharts, but it cannot fetch arbitrary obscure npm packages. Always specify that Claude should rely on built-in Tailwind utilities and standard icons. Pro tip number three: manage context windows by starting a fresh conversation inside the same Project once an artifact is finalized. Because your Project Knowledge holds all your architectural rules, a fresh chat starts with clean memory while maintaining complete consistency. And finally, use the 'Artifact Version History' control. If an iterative prompt breaks your working layout, simply click back to Version 1 or Version 2 to restore your perfect build in one second."
+    },
+    {
+      "section_id": 8,
+      "title": "Real-World Monetization: Turning Claude Artifacts into High-Margin Revenue",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_08.wav",
+      "start_time_sec": 477.52,
+      "duration_sec": 67.5,
+      "end_time_sec": 545.02,
+      "narration": "How do you turn this mastery into tangible income? Here are three proven monetization models that creators and developers are executing right now. Route number one is 48-Hour MVP Prototyping for Founders and Startups. Early-stage entrepreneurs constantly need clickable, interactive proof-of-concepts to show investors and early customers. Instead of spending weeks coding from scratch, you can deliver gorgeous, responsive React prototypes in forty-eight hours, charging between fifteen hundred and three thousand dollars per project. Route number two is Interactive Sales Proposals. If you run a digital agency or freelance consultancy, never send a static PDF proposal again. Build your prospective client a live, customized interactive ROI calculator or dashboard artifact. It demonstrates unmatched competence and dramatically increases your close rates. Route number three is selling specialized Tailwind and React UI component kits, micro-SaaS templates, and interactive calculators on digital storefronts like Gumroad or Lemonsqueezy with zero inventory costs."
+    },
+    {
+      "section_id": 9,
+      "title": "Pricing Breakdown, Free vs Pro Limits & Actionable Next Steps",
+      "audio_file": "/Users/pattuvan/Youtube-agy/audio/20261011_144800/section_09.wav",
+      "start_time_sec": 545.02,
+      "duration_sec": 57.9,
+      "end_time_sec": 602.92,
+      "narration": "To wrap up, let's look at pricing and quotas. Claude Artifacts is accessible on the free tier of claude.ai, making it fantastic for initial experimentation. However, the free tier imposes strict message limits that refresh every few hours. For anyone using this commercially, the Claude Pro plan at twenty dollars a month is non-negotiable\u2014it provides five times more usage, priority access during peak hours, and full access to Claude 3.7 with extended thinking. You now have the exact blueprint to build, refine, and monetize interactive applications. All prompt templates, setup checklists, and component examples from this video are available in the description below. Tell me in the comments: what interactive app are you going to build first with Claude Artifacts? If this guide brought you value, hit that like button, subscribe for weekly masterclasses on leading AI tools, and I will see you in the next video!"
+    }
+  ]
+}

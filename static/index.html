@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Studio Pro — Autonomous YouTube Pipeline</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-title">AI Studio Pro</h1>
+        <div style="display: flex; gap: 6px; align-items: center; margin-top: 2px;">
+          <span class="brand-badge">macOS Desktop</span>
+          <span style="font-size: 0.7rem; color: var(--text-dim);">8–12 Min Autonomous Video Engine</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live System Status Indicators -->
+    <div class="header-status-pills">
+      <div class="status-pill active" title="FFmpeg 9.0.2 is installed and active">
+        <span class="status-indicator"></span>
+        <span>FFmpeg: Ready</span>
+      </div>
+      <div class="status-pill active" title="Native macOS speech synthesis + afconvert active">
+        <span class="status-indicator"></span>
+        <span id="audio-engine-status">Audio: macOS Native (Daniel)</span>
+      </div>
+      <div class="status-pill active" title="YouTube Partner Program 2026 Policy Shield">
+        <span class="status-indicator"></span>
+        <span>YPP Policy Shield: Active</span>
+      </div>
+    </div>
+
+    <!-- Creator Profile / Auth -->
+    <div class="user-profile-button" id="open-profile-btn" title="Channel & Creator Profile">
+      <div class="profile-avatar">AI</div>
+      <div style="text-align: left;">
+        <div class="profile-name">Creator Studio Pro</div>
+        <div style="font-size: 0.65rem; color: #34d399;">● Channel Connected</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="app-nav">
+    <button class="nav-tab active" data-tab="studio">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Studio Creator
+    </button>
+    <button class="nav-tab" data-tab="library">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      Video Library
+    </button>
+    <button class="nav-tab" data-tab="trends">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      Trend Radar
+    </button>
+    <button class="nav-tab" data-tab="compliance">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Monetization Shield
+    </button>
+    <button class="nav-tab" data-tab="advisor">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Model Advisor
+    </button>
+    <button class="nav-tab" data-tab="settings">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </nav>
+
+  <!-- App Main Content Container -->
+  <main class="app-container">
+
+    <!-- ======================================================================= -->
+    <!-- TAB 1: STUDIO CREATOR (Main Generation Workflow) -->
+    <!-- ======================================================================= -->
+    <div id="pane-studio" class="tab-pane active">
+      <div class="grid-studio">
+
+        <!-- Left Column: Topic Input & Configuration -->
+        <div>
+          <!-- Section 1: Multimodal Topic Input -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  Multimodal Topic & Video Blueprint
+                </h2>
+                <div class="card-subtitle">Provide raw ideas, reference links, screenshots, or let the AI suggest trending topics</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="topic-input">Target Topic or Raw Idea (Text / Prompt / Notes)</label>
+              <textarea id="topic-input" class="form-textarea" placeholder="e.g. Claude 3.7 Artifacts: Complete hands-on masterclass building full-stack web applications with Extended Thinking toggle"></textarea>
+            </div>
+
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label" for="ref-image-input">Reference Image / Wireframe (Optional File Path)</label>
+                <input type="text" id="ref-image-input" class="form-input" placeholder="e.g. /Users/pattuvan/Desktop/mockup.png">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ref-video-input">Reference Video / Notes Link (Optional)</label>
+                <input type="text" id="ref-video-input" class="form-input" placeholder="e.g. https://claude.ai/artifacts-demo or notes">
+              </div>
+            </div>
+
+            <!-- Blueprint Action Buttons -->
+            <div class="btn-group">
+              <button id="remodify-btn" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                ✨ Regenerate & Remodify Blueprint
+              </button>
+              <button id="suggest-btn" class="btn btn-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                🔥 Suggest Trending Topic
+              </button>
+            </div>
+
+            <!-- Real-time Blueprint Preview Box -->
+            <div id="blueprint-preview" class="blueprint-box" style="display: none;">
+              <div class="blueprint-header">
+                <div>
+                  <div id="bp-title" class="blueprint-title">Video Title Preview</div>
+                  <div id="bp-tool" style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Tool: Claude 3.7</div>
+                </div>
+                <div id="bp-rpm" class="rpm-badge">Est. RPM: $14 - $28</div>
+              </div>
+              <div class="blueprint-meta-row">
+                <span>⏱ Target Runtime: <strong>8–12 mins</strong></span>
+                <span>📝 Word Count: <strong>1400–1800 words</strong></span>
+                <span>🎯 Format: <strong id="bp-format">Step-by-Step Guide</strong></span>
+              </div>
+              <ul id="bp-points" class="blueprint-points">
+                <li>Key curriculum point</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 2: Production Configuration Dropdowns -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  Video & Audio Production Configuration
+                </h2>
+                <div class="card-subtitle">Fine-tune voice avatar, subtitle format, video resolution, and monetization rules</div>
+              </div>
+            </div>
+
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label" for="config-format">Video Structure & Format</label>
+                <select id="config-format" class="form-select">
+                  <option value="step_by_step" selected>Step-by-Step Hands-On Guide (8-12 Mins)</option>
+                  <option value="masterclass">Comprehensive Masterclass & Deep Dive</option>
+                  <option value="comparison">Head-to-Head Comparison & Benchmark</option>
+                  <option value="crash_course">Beginner Crash Course & Cheat Sheet</option>
+                  <option value="mistakes">5 Critical Mistakes to Avoid</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="config-voice">Voice Avatar / Speech Synthesis</label>
+                <select id="config-voice" class="form-select">
+                  <option value="Daniel" selected>Daniel (UK Studio Professional — macOS Native)</option>
+                  <option value="Samantha">Samantha (US Natural Studio — macOS Native)</option>
+                  <option value="Eddy (English (UK))">Eddy (UK Conversational)</option>
+                  <option value="Flo (English (US))">Flo (US Engaging)</option>
+                  <option value="Google Journey">Google Cloud Journey Neural (Studio-F)</option>
+                  <option value="ElevenLabs">ElevenLabs Multilingual v2 (High Emotion)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-row-3">
+              <div class="form-group">
+                <label class="form-label" for="config-language">Language & Dialect</label>
+                <select id="config-language" class="form-select">
+                  <option value="en-US" selected>English (United States)</option>
+                  <option value="en-GB">English (United Kingdom)</option>
+                  <option value="es-ES">Spanish (Castilian)</option>
+                  <option value="de-DE">German (Standard)</option>
+                  <option value="fr-FR">French (Standard)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="config-subtitles">Subtitles & Captions</label>
+                <select id="config-subtitles" class="form-select">
+                  <option value="srt_sync" selected>SRT Timed File (Zero Distortion)</option>
+                  <option value="burn_in">Burned-In Modern Captions</option>
+                  <option value="minimal">Minimalist Lower-Third</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="config-quality">Video Quality & Framerate</label>
+                <select id="config-quality" class="form-select">
+                  <option value="1080p_30" selected>1080p Full HD (30fps High Bitrate)</option>
+                  <option value="1080p_60">1080p Full HD (60fps Fluid)</option>
+                  <option value="4k_30">4K Ultra HD (3840x2160)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-row">
+              <div class="form-group">
+                <label class="form-label" for="config-music">Background Music Ducking</label>
+                <select id="config-music" class="form-select">
+                  <option value="ambient_ducked" selected>Soft Ambient Ducked (-22dB Voice Priority)</option>
+                  <option value="lofi_tech">Modern Tech Lo-Fi</option>
+                  <option value="cinematic">Cinematic Deep Focus</option>
+                  <option value="none">No Background Music (Voice Only)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="config-upload-mode">Execution Mode</label>
+                <select id="config-upload-mode" class="form-select">
+                  <option value="review" selected>Review Mode (Pause Before Upload — Recommended)</option>
+                  <option value="auto_private">Full Auto Upload (Upload to Channel as Private)</option>
+                  <option value="auto_unlisted">Full Auto Upload (Upload as Unlisted)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Generation Launcher & Real-time Console Monitor -->
+        <div>
+          <!-- Giant Primary Action Button -->
+          <div style="margin-bottom: 20px;">
+            <button id="start-pipeline-btn" class="btn btn-primary btn-block btn-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Launch Autonomous 7-Stage Pipeline
+            </button>
+            <div style="font-size: 0.72rem; color: var(--text-dim); text-align: center; margin-top: 8px;">
+              Executes: Research ➔ Script ➔ Voiceover ➔ 1080p Slides ➔ FFmpeg Assembly ➔ Metadata & Thumbnail
+            </div>
+          </div>
+
+          <!-- Live Progress & Stage Tracker Card -->
+          <div class="progress-card">
+            <div class="progress-header">
+              <span id="current-stage-label">Status: Ready to Generate</span>
+              <span id="progress-percent" style="color: #38bdf8;">0%</span>
+            </div>
+
+            <div class="progress-track">
+              <div id="progress-bar-fill" class="progress-fill"></div>
+            </div>
+
+            <div class="stage-steps">
+              <div id="step-1" class="stage-step">1. Topic</div>
+              <div id="step-2" class="stage-step">2. Script</div>
+              <div id="step-3" class="stage-step">3. Audio</div>
+              <div id="step-4" class="stage-step">4. Visuals</div>
+              <div id="step-5" class="stage-step">5. Assembly</div>
+              <div id="step-6" class="stage-step">6. Metadata</div>
+              <div id="step-7" class="stage-step">7. Review</div>
+            </div>
+
+            <div class="card-header" style="margin-bottom: 8px;">
+              <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted);">Real-Time Studio Console</span>
+              <span style="font-size: 0.68rem; color: #10b981;">● Live Stream</span>
+            </div>
+
+            <div id="console-stream" class="console-box">
+              <div class="console-entry"><span class="console-time">[READY]</span> System initialized. Zero-cost local engine loaded.</div>
+              <div class="console-entry"><span class="console-time">[READY]</span> FFmpeg 9.0.2 verified at /opt/homebrew/bin/ffmpeg.</div>
+              <div class="console-entry"><span class="console-time">[READY]</span> Enter a topic above or pick from Trend Radar to start.</div>
+            </div>
+          </div>
+
+          <!-- Quick Compliance Summary Card -->
+          <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+              <h3 class="card-title" style="font-size: 0.95rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Active YouTube Compliance Guard
+              </h3>
+              <span class="rpm-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">100% Monitored</span>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;">
+              Every generated video is automatically audited against YouTube Partner Program (YPP) policies:
+              <ul style="margin: 8px 0 0 16px;">
+                <li>Advertiser-Friendly (Zero demonetization triggers)</li>
+                <li>Synthetic Media Disclosure (Compliant AI tagging)</li>
+                <li>Educational Framing (Protected against Reused Content)</li>
+                <li>00:00 Chapter Verification (High-CTR Key Moments)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 2: VIDEO LIBRARY & MEDIA INSPECTOR -->
+    <!-- ======================================================================= -->
+    <div id="pane-library" class="tab-pane">
+      <div class="grid-studio">
+
+        <!-- Left Column: Video List -->
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Generated Projects</h2>
+              <button id="refresh-projects-btn" class="btn btn-secondary" style="font-size: 0.75rem; padding: 4px 8px;">Refresh</button>
+            </div>
+            <div id="projects-list-container" style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="font-size: 0.8rem; color: var(--text-dim); text-align: center; padding: 20px;">Loading project library...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Media Player & SEO Inspector -->
+        <div>
+          <div class="card" id="project-detail-card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" id="selected-project-title">Select a Project</h2>
+                <div class="card-subtitle" id="selected-project-meta">Inspect video, thumbnail, and YouTube metadata</div>
+              </div>
+              <div id="selected-project-badge" class="rpm-badge" style="display: none;">1080p Ready</div>
+            </div>
+
+            <!-- Video Player -->
+            <div class="media-container" id="video-container" style="display: none;">
+              <video id="library-video-player" controls preload="metadata"></video>
+            </div>
+
+            <!-- Audio Player -->
+            <div class="audio-player-wrapper" id="audio-container" style="display: none;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Studio Voiceover Track:</div>
+              <audio id="library-audio-player" controls></audio>
+            </div>
+
+            <!-- Thumbnail Preview -->
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">YouTube 1280x720 Thumbnail:</div>
+              <img id="library-thumbnail-img" class="thumbnail-preview-img" src="" alt="Thumbnail preview" style="display: none;">
+            </div>
+
+            <!-- YouTube SEO Title -->
+            <div class="form-group copyable-field">
+              <label class="form-label">Optimized YouTube Title</label>
+              <input type="text" id="library-yt-title" class="form-input" readonly>
+              <button class="copy-btn" data-target="library-yt-title">Copy</button>
+            </div>
+
+            <!-- YouTube Description with Chapters -->
+            <div class="form-group copyable-field">
+              <label class="form-label">SEO Description with Chapter Timestamps</label>
+              <textarea id="library-yt-desc" class="form-textarea" style="min-height: 140px;" readonly></textarea>
+              <button class="copy-btn" data-target="library-yt-desc">Copy</button>
+            </div>
+
+            <!-- Tags -->
+            <div class="form-group">
+              <label class="form-label">SEO Keyword Tags</label>
+              <div id="library-tags-container" class="tags-cloud"></div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="btn-group" style="margin-top: 16px;">
+              <button id="lib-upload-btn" class="btn btn-success">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload to YouTube (Private)
+              </button>
+              <button id="lib-audit-btn" class="btn btn-secondary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Audit Compliance
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 3: TREND RADAR & HIGH-RPM NICHES -->
+    <!-- ======================================================================= -->
+    <div id="pane-trends" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              High-RPM AI Tool Trend Radar (2026 Edition)
+            </h2>
+            <div class="card-subtitle">Curated high-engagement topics with verified viewer retention and ad monetization rates</div>
+          </div>
+        </div>
+
+        <div id="trend-cards-container" class="trend-card-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 4: MONETIZATION & POLICY COMPLIANCE SHIELD -->
+    <!-- ======================================================================= -->
+    <div id="pane-compliance" class="tab-pane">
+      <div class="grid-studio">
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Latest Project Audit Scorecard</h2>
+              <button id="run-latest-audit-btn" class="btn btn-secondary" style="font-size: 0.75rem;">Re-Audit</button>
+            </div>
+
+            <div class="compliance-score-circle">
+              <span id="audit-score-num" class="compliance-score-val">100</span>
+              <span id="audit-score-text" class="compliance-score-label">SAFE</span>
+            </div>
+
+            <div id="audit-checks-container">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Interactive Policy Guard Tester</h2>
+              <div class="card-subtitle">Test custom titles, descriptions, or scripts for advertiser safety</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Title to Test</label>
+              <input type="text" id="test-title" class="form-input" value="How to Build Full Apps with Claude 3.7 Artifacts (2026 Masterclass)">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Description / Script Excerpt to Test</label>
+              <textarea id="test-body" class="form-textarea" style="min-height: 120px;">In this complete hands-on tutorial, we explore step-by-step how to use Claude 3.7 Artifacts to build interactive React applications. 00:00 Introduction 01:30 Setup</textarea>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="test-ai-disclosure" checked>
+              <label for="test-ai-disclosure" style="font-size: 0.8rem; color: var(--text-muted);">Include YouTube Altered / Synthetic Media AI Disclosure</label>
+            </div>
+
+            <button id="run-custom-audit-btn" class="btn btn-primary btn-block">Run Policy Compliance Audit</button>
+
+            <div id="custom-audit-results" style="margin-top: 16px; display: none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 5: AI MODEL ADVISOR -->
+    <!-- ======================================================================= -->
+    <div id="pane-advisor" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">AI Engine Architecture & Model Advisor</h2>
+            <div class="card-subtitle">Hardware, API keys, and cost-benefit breakdown for video generation</div>
+          </div>
+        </div>
+
+        <div id="model-advisor-content" style="display: flex; flex-direction: column; gap: 16px;">
+          <!-- Loaded via /api/status -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- TAB 6: SETTINGS -->
+    <!-- ======================================================================= -->
+    <div id="pane-settings" class="tab-pane">
+      <div class="card" style="max-width: 700px; margin: 0 auto;">
+        <div class="card-header">
+          <h2 class="card-title">Studio & Channel Preferences</h2>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Default YouTube Privacy Status</label>
+          <select id="settings-privacy" class="form-select">
+            <option value="private" selected>Private (Manual review before publishing)</option>
+            <option value="unlisted">Unlisted (Shareable link, hidden from search)</option>
+            <option value="public">Public (Immediate live publish)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Default Audio Voice Avatar</label>
+          <select id="settings-default-voice" class="form-select">
+            <option value="Daniel" selected>Daniel (UK Studio Professional)</option>
+            <option value="Samantha">Samantha (US Natural)</option>
+            <option value="Eddy (English (UK))">Eddy (UK)</option>
+            <option value="Flo (English (US))">Flo (US)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Background Music Ducking Volume (0.00 to 0.30)</label>
+          <input type="number" id="settings-music-vol" class="form-input" min="0" max="0.30" step="0.01" value="0.08">
+          <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 4px;">Default 0.08 provides balanced ambient ducking without masking speech.</div>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="settings-daily-review" checked>
+          <label for="settings-daily-review" style="font-size: 0.8rem; color: var(--text-muted);">Enforce periodic YouTube monetization policy checks</label>
+        </div>
+
+        <button id="save-settings-btn" class="btn btn-primary" style="margin-top: 10px;">Save Preferences</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Creator Profile & Channel Login Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 600;">YouTube Creator Channel Setup</h3>
+        <button id="close-profile-btn" class="modal-close">&times;</button>
+      </div>
+      <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">
+        Connect your official YouTube Data API credentials for automatic or review-based uploads.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Client Secrets File</label>
+        <input type="text" class="form-input" value="config/client_secrets.json" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">OAuth Token File</label>
+        <input type="text" class="form-input" value="config/token.json" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Upload Channel Mode</label>
+        <input type="text" class="form-input" value="Default Authorized Channel" readonly>
+      </div>
+
+      <div class="btn-group" style="margin-top: 16px;">
+        <button class="btn btn-primary btn-block" onclick="document.getElementById('profile-modal').classList.remove('active')">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
