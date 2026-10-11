@@ -172,9 +172,12 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
-        with open(file_path, "rb") as f:
-            while chunk := f.read(65536):
-                self.wfile.write(chunk)
+        try:
+            with open(file_path, "rb") as f:
+                while chunk := f.read(65536):
+                    self.wfile.write(chunk)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
 
     def _handle_media_stream(self, path: str) -> None:
         """Handles byte-range streaming for MP4 videos and WAV audio."""
@@ -227,16 +230,19 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
 
-            with open(file_path, "rb") as f:
-                f.seek(start)
-                remaining = length
-                while remaining > 0:
-                    chunk_to_read = min(remaining, 65536)
-                    data = f.read(chunk_to_read)
-                    if not data:
-                        break
-                    self.wfile.write(data)
-                    remaining -= len(data)
+            try:
+                with open(file_path, "rb") as f:
+                    f.seek(start)
+                    remaining = length
+                    while remaining > 0:
+                        chunk_to_read = min(remaining, 65536)
+                        data = f.read(chunk_to_read)
+                        if not data:
+                            break
+                        self.wfile.write(data)
+                        remaining -= len(data)
+            except (BrokenPipeError, ConnectionResetError):
+                pass
         else:
             self._serve_file(file_path, content_type)
 
