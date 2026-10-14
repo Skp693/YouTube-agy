@@ -1,7 +1,12 @@
 """Stage 4: Visuals and Slide Graphic Generation."""
 
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+try:
+    from PIL import Image, ImageDraw, ImageFont
+    HAS_PIL = True
+except ImportError:
+    HAS_PIL = False
+
 from config.settings import settings
 from src.models import ProjectState, VisualAsset, ScriptSection
 from src.stages.base import BaseStage
@@ -62,6 +67,19 @@ class VisualsStage(BaseStage):
         """Renders an aesthetic 1920x1080 dark-mode slide with typography and accents."""
         width = settings.VIDEO_RESOLUTION_WIDTH
         height = settings.VIDEO_RESOLUTION_HEIGHT
+
+        if not HAS_PIL:
+            from visuals import render_slide_native_bmp
+            render_slide_native_bmp(
+                section_num=section.index + 1,
+                section_type=section.section_type,
+                title=section.section_title[:65],
+                bullets=section.on_screen_text,
+                output_path=output_path,
+                width=width,
+                height=height
+            )
+            return
 
         # Dark sleek background
         img = Image.new("RGB", (width, height), color=(15, 23, 42))  # Slate 900

@@ -342,14 +342,22 @@ def generate_metadata_and_thumbnail(
         })
 
     # 3. High-CTR SEO Title (< 70 characters)
-    title = f"How to Use {tool_name} (Step-by-Step 2026 Guide)"
-    if len(title) > 65:
-        title = f"{tool_name} Full Tutorial (Complete 2026 Guide)"
+    if script_data.get("suggested_title"):
+        title = script_data["suggested_title"]
+        if len(title) > 68:
+            title = f"{title[:65]}..."
+    else:
+        title = f"How to Use {tool_name} (Step-by-Step 2026 Guide)"
+        if len(title) > 65:
+            title = f"{tool_name} Full Tutorial (Complete 2026 Guide)"
 
     # 4. Description with Chapters, Key Takeaways & CTA
+    desc_intro = script_data.get("description_summary") or (
+        f"Master {tool_name} from setup to pro workflows in this complete step-by-step 2026 guide.\n"
+        f"Learn how to streamline tasks, automate complex steps, and build production-ready projects in minutes."
+    )
     desc_lines = [
-        f"Master {tool_name} from setup to pro workflows in this complete step-by-step 2026 guide.",
-        f"Learn how to streamline tasks, automate complex steps, and build production-ready projects in minutes.\n",
+        desc_intro + "\n",
         "⏱️ TIMESTAMPS / CHAPTERS:",
     ]
     for ch in chapters:

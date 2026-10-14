@@ -1,0 +1,78 @@
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:68]: ================================================================================
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:69]: STARTING AUTONOMOUS YOUTUBE PIPELINE | Project ID: test_20261012_smallbiz
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:70]: Execution Mode: REVIEW MODE (SAFE PREVIEW)
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:71]: ================================================================================
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:76]: >>> [1/7] STAGE 1: Topic Selection & Research...
+[2026-10-12 04:09:49] [INFO] [topic_selector:topic_selector.py:141]: Using explicitly specified tool: 5 Practical AI Tools That Can Save Small Business Owners Time in 2026
+[2026-10-12 04:09:49] [INFO] [topic_selector:topic_selector.py:216]: Topic saved to /Users/pattuvan/Youtube-agy/topics/test_20261012_smallbiz_topic.json
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:82]: Selected Tool: 5 Practical AI Tools That Can Save Small Business Owners Time in 2026 ('How to Use 5 Practical AI Tools That Can Save Small Business Owners Time in 2026 (Step-by-Step 2026 Guide)')
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:87]: >>> [2/7] STAGE 2: Script Writing (1400-1800 Words Target)...
+[2026-10-12 04:09:49] [INFO] [script_writer:script_writer.py:660]: Writing educational script for '5 Practical AI Tools That Can Save Small Business Owners Time in 2026' (Project test_20261012_smallbiz)...
+[2026-10-12 04:09:49] [INFO] [script_writer:script_writer.py:669]: Generating specialized 5 Practical AI Tools for Small Business curriculum (~710 words, ~4 mins)...
+[2026-10-12 04:09:49] [INFO] [script_writer:script_writer.py:703]: Script generated successfully: 727 words (~5.01 minutes).
+[2026-10-12 04:09:49] [INFO] [script_writer:script_writer.py:719]: Saved script JSON to /Users/pattuvan/Youtube-agy/scripts/test_20261012_smallbiz_script.json
+[2026-10-12 04:09:49] [INFO] [script_writer:script_writer.py:720]: Saved script TXT to /Users/pattuvan/Youtube-agy/scripts/test_20261012_smallbiz_script.txt
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:92]: Script generated: 727 words | Est. Runtime: 5.01 mins | 7 sections
+[2026-10-12 04:09:49] [INFO] [main_pipeline:main_pipeline.py:101]: >>> [3/7] STAGE 3: Professional AI Voiceover Synthesis...
+[2026-10-12 04:09:49] [INFO] [voiceover:voiceover.py:245]: Synthesizing voiceover for 7 sections with voice 'Daniel' @ 165 WPM (Project: test_20261012_smallbiz)...
+[2026-10-12 04:09:51] [INFO] [voiceover:voiceover.py:296]: Section 01 audio generated (43.56s) -> section_01.wav
+[2026-10-12 04:09:53] [INFO] [voiceover:voiceover.py:296]: Section 02 audio generated (45.98s) -> section_02.wav
+[2026-10-12 04:09:54] [INFO] [voiceover:voiceover.py:296]: Section 03 audio generated (42.91s) -> section_03.wav
+[2026-10-12 04:09:56] [INFO] [voiceover:voiceover.py:296]: Section 04 audio generated (44.61s) -> section_04.wav
+[2026-10-12 04:09:57] [INFO] [voiceover:voiceover.py:296]: Section 05 audio generated (45.65s) -> section_05.wav
+[2026-10-12 04:09:59] [INFO] [voiceover:voiceover.py:296]: Section 06 audio generated (41.99s) -> section_06.wav
+[2026-10-12 04:10:00] [INFO] [voiceover:voiceover.py:296]: Section 07 audio generated (38.16s) -> section_07.wav
+[2026-10-12 04:10:00] [INFO] [voiceover:voiceover.py:301]: Concatenated full voiceover track (302.86s) -> full_voiceover.wav
+[2026-10-12 04:10:00] [INFO] [voiceover:voiceover.py:317]: Saved audio timing data to /Users/pattuvan/Youtube-agy/audio/test_20261012_smallbiz/timing.json
+[2026-10-12 04:10:00] [INFO] [main_pipeline:main_pipeline.py:108]: Voiceover complete: 302.86s (5.05 mins)
+[2026-10-12 04:10:00] [INFO] [main_pipeline:main_pipeline.py:116]: >>> [4/7] STAGE 4: Educational 1080p Visuals & Scene Generation...
+[2026-10-12 04:10:00] [INFO] [visuals:visuals.py:259]: Generating 1080p visual assets for 7 scenes (Project: test_20261012_smallbiz)...
+[2026-10-12 04:10:01] [INFO] [visuals:visuals.py:302]: Scene 01 rendered (43.56s) -> scene_01.png
+[2026-10-12 04:10:01] [INFO] [visuals:visuals.py:302]: Scene 02 rendered (45.98s) -> scene_02.png
+[2026-10-12 04:10:02] [INFO] [visuals:visuals.py:302]: Scene 03 rendered (42.91s) -> scene_03.png
+[2026-10-12 04:10:02] [INFO] [visuals:visuals.py:302]: Scene 04 rendered (44.61s) -> scene_04.png
+[2026-10-12 04:10:03] [INFO] [visuals:visuals.py:302]: Scene 05 rendered (45.65s) -> scene_05.png
+[2026-10-12 04:10:03] [INFO] [visuals:visuals.py:302]: Scene 06 rendered (41.99s) -> scene_06.png
+[2026-10-12 04:10:04] [INFO] [visuals:visuals.py:302]: Scene 07 rendered (38.16s) -> scene_07.png
+[2026-10-12 04:10:04] [INFO] [visuals:visuals.py:316]: Saved scene timeline JSON to /Users/pattuvan/Youtube-agy/images/test_20261012_smallbiz/scenes_timeline.json
+[2026-10-12 04:10:04] [INFO] [main_pipeline:main_pipeline.py:126]: Generated 7 visual scenes for video timeline.
+[2026-10-12 04:10:05] [INFO] [main_pipeline:main_pipeline.py:133]: Captured live web B-roll for 5 Practical AI Tools That Can Save Small Business Owners Time in 2026
+[2026-10-12 04:10:05] [INFO] [main_pipeline:main_pipeline.py:140]: >>> [5/7] STAGE 5: Video Assembly, Transitions & Audio Ducking...
+[2026-10-12 04:10:05] [INFO] [assemble_video:assemble_video.py:66]: Generated SRT captions: /Users/pattuvan/Youtube-agy/scripts/test_20261012_smallbiz_captions.srt (63 cues)
+[2026-10-12 04:10:05] [INFO] [assemble_video:assemble_video.py:198]: Generated standalone render script: /Users/pattuvan/Youtube-agy/videos/test_20261012_smallbiz_render.sh
+[2026-10-12 04:10:05] [INFO] [assemble_video:assemble_video.py:202]: Rendering final 1080p video via FFmpeg (/opt/homebrew/bin/ffmpeg)...
+[2026-10-12 04:10:41] [INFO] [assemble_video:assemble_video.py:205]: FFmpeg render successful -> /Users/pattuvan/Youtube-agy/videos/test_20261012_smallbiz_final.mp4
+[2026-10-12 04:10:41] [INFO] [main_pipeline:main_pipeline.py:151]: Video assembly finished -> /Users/pattuvan/Youtube-agy/videos/test_20261012_smallbiz_final.mp4
+[2026-10-12 04:10:41] [INFO] [main_pipeline:main_pipeline.py:156]: >>> [6/7] STAGE 6: SEO Metadata & High-CTR Thumbnail...
+[2026-10-12 04:10:41] [INFO] [metadata:metadata.py:322]: Generating SEO metadata and thumbnail for '5 Practical AI Tools for Small Business' (Project test_20261012_smallbiz)...
+[2026-10-12 04:10:42] [INFO] [metadata:metadata.py:435]: Saved metadata to /Users/pattuvan/Youtube-agy/metadata/test_20261012_smallbiz_metadata.json
+[2026-10-12 04:10:42] [INFO] [metadata:metadata.py:436]: Generated 3 thumbnail A/B variations: test_20261012_smallbiz_thumb_A.png, test_20261012_smallbiz_thumb_B.png, test_20261012_smallbiz_thumb_C.png
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:162]: Metadata & Thumbnail generated -> /Users/pattuvan/Youtube-agy/thumbnails/test_20261012_smallbiz_thumbnail.png
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:175]: >>> [7/7] STAGE 7: Review Mode Active (Upload Paused)...
+[2026-10-12 04:10:42] [INFO] [youtube_uploader:youtube_uploader.py:114]: Preparing YouTube upload for: '5 Practical AI Tools That Save Small Business Owners Time in 2026' (Privacy: private)
+[2026-10-12 04:10:42] [INFO] [youtube_uploader:youtube_uploader.py:121]: [DRY-RUN MODE] Video payload verified: /Users/pattuvan/Youtube-agy/videos/test_20261012_smallbiz_final.mp4 (6162308 bytes). Ready for upload to YouTube Data API v3.
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:214]: ================================================================================
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:215]: PIPELINE COMPLETED IN 52.76s | Project: test_20261012_smallbiz
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:216]: Video:     /Users/pattuvan/Youtube-agy/videos/test_20261012_smallbiz_final.mp4
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:217]: Thumbnail: /Users/pattuvan/Youtube-agy/thumbnails/test_20261012_smallbiz_thumbnail.png
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:218]: Status:    VERIFIED_READY
+[2026-10-12 04:10:42] [INFO] [main_pipeline:main_pipeline.py:219]: ================================================================================
+
+======================================================================
+🎬 AUTONOMOUS YOUTUBE VIDEO PIPELINE - EXECUTION SUMMARY
+======================================================================
+Project ID:       test_20261012_smallbiz
+Mode:             REVIEW (Ready for Inspection)
+Tool Featured:    5 Practical AI Tools That Can Save Small Business Owners Time in 2026
+Video Title:      5 Practical AI Tools That Save Small Business Owners Time in 2026
+Script Length:    727 words (~5.05 minutes)
+----------------------------------------------------------------------
+📹 Final Video:    /Users/pattuvan/Youtube-agy/videos/test_20261012_smallbiz_final.mp4
+🖼️ Thumbnail:      /Users/pattuvan/Youtube-agy/thumbnails/test_20261012_smallbiz_thumbnail.png
+📝 Metadata:       /Users/pattuvan/Youtube-agy/metadata/test_20261012_smallbiz_metadata.json
+💬 Captions (SRT): /Users/pattuvan/Youtube-agy/scripts/test_20261012_smallbiz_captions.srt
+----------------------------------------------------------------------
+🚀 Upload Status:  VERIFIED_READY
+🔗 YouTube Link:   https://youtu.be/DRY_RUN_test_20261012_smallbiz
+======================================================================
+

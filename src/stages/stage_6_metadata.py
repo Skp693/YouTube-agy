@@ -1,9 +1,13 @@
-"""Stage 6: Metadata Generation (Title, Description, Chapters, Tags) & Thumbnail Creation."""
-
 import json
 from pathlib import Path
 from typing import List
-from PIL import Image, ImageDraw
+
+try:
+    from PIL import Image, ImageDraw
+    HAS_PIL = True
+except ImportError:
+    HAS_PIL = False
+
 from config.settings import settings
 from src.models import ProjectState, VideoMetadata, ChapterMarker
 from src.stages.base import BaseStage
@@ -128,6 +132,12 @@ class MetadataThumbnailStage(BaseStage):
     def _generate_thumbnail(self, tool_name: str, output_path: Path) -> None:
         """Generates a high-contrast 1280x720 YouTube thumbnail."""
         width, height = 1280, 720
+
+        if not HAS_PIL:
+            from metadata import render_thumbnail_variant_a
+            render_thumbnail_variant_a(tool_name, output_path, width, height)
+            return
+
         # Dark dramatic gradient base
         img = Image.new("RGB", (width, height), color=(10, 15, 30))
         draw = ImageDraw.Draw(img)

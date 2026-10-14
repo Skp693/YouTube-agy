@@ -23,10 +23,11 @@ logger = setup_logger("assemble_video")
 
 def format_srt_time(seconds: float) -> str:
     """Formats seconds into SRT time format: HH:MM:SS,mmm."""
-    hrs = int(seconds // 3600)
-    mins = int((seconds % 3600) // 60)
-    secs = int(seconds % 60)
-    millis = int((seconds - int(seconds)) * 1000)
+    total_ms = int(round(seconds * 1000))
+    hrs = total_ms // 3600000
+    mins = (total_ms % 3600000) // 60000
+    secs = (total_ms % 60000) // 1000
+    millis = total_ms % 1000
     return f"{hrs:02d}:{mins:02d}:{secs:02d},{millis:03d}"
 
 def generate_srt_captions(
@@ -155,8 +156,8 @@ def assemble_video(
     ffmpeg_bin = shutil.which("ffmpeg")
     render_script_path = project_video_dir / f"{project_id}_render.sh"
 
-    # Dynamic Ken Burns Pan & Zoom filter
-    motion_filter = "zoompan=z='min(zoom+0.00015,1.05)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1920x1080:fps=30" if ken_burns else "scale=1920:1080"
+    # Ensure solid 30fps presentation timeline matching exact audio duration
+    video_filter = "fps=30,scale=1920:1080"
 
     # Build standard FFmpeg execution arguments
     if bg_music and bg_music.exists():
@@ -166,7 +167,7 @@ def assemble_video(
             "-i", str(master_audio),
             "-stream_loop", "-1", "-i", str(bg_music.resolve()),
             "-filter_complex",
-            f"[0:v]{motion_filter}[vout];[2:a]volume={music_vol}[bg];[1:a][bg]amix=inputs=2:duration=first[aout]",
+            f"[0:v]{video_filter}[vout];[2:a]volume={music_vol}[bg];[1:a][bg]amix=inputs=2:duration=first[aout]",
             "-map", "[vout]",
             "-map", "[aout]",
             "-c:v", "libx264", "-preset", "medium", "-crf", "20",
@@ -180,7 +181,7 @@ def assemble_video(
             "ffmpeg", "-y",
             "-f", "concat", "-safe", "0", "-i", str(concat_txt),
             "-i", str(master_audio),
-            "-vf", motion_filter,
+            "-vf", video_filter,
             "-c:v", "libx264", "-preset", "medium", "-crf", "20",
             "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-b:a", "192k",

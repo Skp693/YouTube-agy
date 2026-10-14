@@ -116,7 +116,8 @@ def render_slide_native_bmp(
     bullets: List[str],
     output_path: Path,
     width: int = 1920,
-    height: int = 1080
+    height: int = 1080,
+    tool_name: str = "AI TOOL EXPLAINER"
 ) -> None:
     """Renders 1080p slide image with rasterized typography using pure standard library."""
     bmp_path = output_path.with_suffix(".bmp")
@@ -218,7 +219,7 @@ def render_slide_native_bmp(
         card_y += 105
 
     # 8. Footer Branding
-    footer = "CLAUDE 3.7 ARTIFACTS • AUTONOMOUS VIDEO PIPELINE 2026"
+    footer = f"{tool_name[:32].upper()} • AUTONOMOUS VIDEO PIPELINE 2026"
     draw_text_bmp(pixel_buffer, footer, x=100, y=height - 120, color_bgr=muted_bgr, scale=2, width=width, height=height)
 
     # Write BMP file
@@ -282,10 +283,11 @@ def generate_visuals(
 
         # 2. Render crisp educational slide
         if not generated_by_imagen:
+            tool_name = script_data.get("tool_name", "AI Tool")
             if HAS_PIL:
                 render_slide_with_pil(sec_id, sec_type, title, bullets, output_img_path)
             else:
-                render_slide_native_bmp(sec_id, sec_type, title, bullets, output_img_path)
+                render_slide_native_bmp(sec_id, sec_type, title, bullets, output_img_path, tool_name=tool_name)
 
         scenes_timeline.append({
             "scene_id": sec_id,

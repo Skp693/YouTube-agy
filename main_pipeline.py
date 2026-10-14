@@ -279,6 +279,7 @@ def main():
 
     parser.add_argument("--tool", type=str, help="AI tool to feature (e.g. 'Cursor AI', 'NotebookLM')")
     parser.add_argument("--angle", type=str, help="Tutorial angle or focus")
+    parser.add_argument("--project-id", type=str, help="Custom project identifier")
     parser.add_argument("--privacy", type=str, choices=["private", "unlisted", "public"], help="Upload privacy status")
     parser.add_argument("--schedule", action="store_true", help="Run continuously on an autonomous schedule")
     parser.add_argument("--interval-hours", type=int, default=24, help="Hours between scheduled runs (default: 24)")
@@ -295,7 +296,8 @@ def main():
             tool_name=args.tool,
             angle=args.angle,
             auto_upload=auto_upload,
-            privacy=args.privacy
+            privacy=args.privacy,
+            project_id=args.project_id
         )
         print_summary_card(summary)
 

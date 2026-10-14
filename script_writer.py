@@ -472,6 +472,177 @@ def build_procedural_script(topic_data: Dict[str, Any]) -> Dict[str, Any]:
         "sections": sections
     }
 
+def build_small_business_ai_tools_script(topic_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Generates an authentic, fact-checked educational video script for 5 practical AI tools for small businesses."""
+    tool_name = "5 Practical AI Tools for Small Business"
+    suggested_title = "5 Practical AI Tools That Save Small Business Owners Time in 2026"
+    description_summary = (
+        "Discover 5 practical, battle-tested AI tools saving small business owners, freelancers, "
+        "and agency operators 10+ hours every week in 2026. No fluff, no coding—just actionable operational leverage."
+    )
+    sections = [
+        {
+            "id": 1,
+            "section_type": "overview",
+            "title": "The Small Business Time Trap in 2026",
+            "narration": (
+                "If you run a small business in 2026, you already know the hardest part isn't finding customers—it's drowning "
+                "in repetitive admin tasks, unanswered emails, manual scheduling, and endless paperwork. Most artificial intelligence "
+                "advice online is completely disconnected from daily operations, focusing on hypothetical hype rather than real leverage. "
+                "In this practical guide, we are cutting through the noise to examine five battle-tested AI tools that real small business "
+                "owners, freelancers, and agency operators are using right now to save ten or more hours every single week. No coding "
+                "required, no complicated setups—just immediate, practical leverage. Let's get straight to work."
+            ),
+            "visual_description": "Overview dashboard showing the administrative time trap faced by small businesses and the 5 AI solutions",
+            "image_prompt": "Clean modern dashboard showing 5 AI business solutions eliminating admin tasks, dark slate UI, sleek 4k graphic",
+            "on_screen_text": [
+                "THE ADMIN TRAP: PAPERWORK, INVOICES & EMAILS",
+                "REAL OPERATIONAL LEVERAGE VS AI HYPE",
+                "SAVE 10+ HOURS WEEKLY WITH ZERO CODE"
+            ],
+            "duration_estimate_sec": 38.0
+        },
+        {
+            "id": 2,
+            "section_type": "tool_1",
+            "title": "Google NotebookLM: Grounded SOP Knowledge Base",
+            "narration": (
+                "First up is Google NotebookLM. Small businesses lose hours digging through vendor contracts, employee onboarding "
+                "handbooks, client proposals, and supplier invoices. NotebookLM solves this by creating a private, grounded knowledge base "
+                "powered by Gemini 1.5 Pro. You simply upload your PDF contracts, Google Docs, and spreadsheets into a project notebook. "
+                "You can then ask questions in plain English—like what are our warranty return terms, or summarize subcontractor deliverables—and "
+                "it answers instantly with verifiable source citations. It even generates conversational audio overviews that explain complex "
+                "manuals on the go. Best of all, NotebookLM is currently completely free in Google Labs."
+            ),
+            "visual_description": "Google NotebookLM workflow showing uploaded documents and instant citation-backed answers",
+            "image_prompt": "Infographic showing PDF and spreadsheet documents grounded into NotebookLM with interactive citations and audio summaries",
+            "on_screen_text": [
+                "UPLOAD CONTRACTS, MANUALS & SPREADSHEETS",
+                "GROUNDED Q&A WITH VERIFIABLE CITATIONS",
+                "AUTO AUDIO OVERVIEWS FOR FAST BRIEFINGS",
+                "100% FREE IN GOOGLE LABS"
+            ],
+            "duration_estimate_sec": 39.0
+        },
+        {
+            "id": 3,
+            "section_type": "tool_2",
+            "title": "Notion AI: Automated Notes & Team Knowledge Base",
+            "narration": (
+                "Our second tool is Notion AI. Managing projects across a small team usually turns into a chaotic mess of scattered docs "
+                "and missed follow-ups. Notion AI integrates conversational intelligence directly into your documents and tables. When you paste "
+                "meeting notes or customer discovery transcripts, Notion AI automatically extracts action items, assigns due dates, and flags open "
+                "questions. Even better, its workspace Q and A lets any team member ask questions across your company wiki—like what is our standard "
+                "refund policy or who is our primary freight contact—instantly surfacing the exact document. Notion AI is available as a straightforward "
+                "add-on for around eight to ten dollars per member monthly."
+            ),
+            "visual_description": "Notion AI workspace highlighting meeting action item extraction and company wiki Q&A",
+            "image_prompt": "Modern Notion workspace showing automated action item checkboxes extracted from meeting notes, clean UI layout",
+            "on_screen_text": [
+                "AUTO-EXTRACT ACTION ITEMS FROM MEETINGS",
+                "WORKSPACE Q&A ACROSS ALL COMPANY DOCS",
+                "DRAFT PROPOSALS, SPECS & CLIENT EMAILS",
+                "ADD-ON PRICING: ~$8-$10 / MEMBER / MONTH"
+            ],
+            "duration_estimate_sec": 40.0
+        },
+        {
+            "id": 4,
+            "section_type": "tool_3",
+            "title": "Descript: Text-Based Video & Marketing Content",
+            "narration": (
+                "Our third tool is Descript. Video marketing, product walkthroughs, and customer testimonials are critical for modern sales, "
+                "but traditional video editing takes hours in complex timelines. Descript completely flips video production by turning your "
+                "recordings into an editable text document. When you delete a sentence from the transcript, Descript automatically cuts that exact "
+                "video clip. It features one-click filler word removal to purge ums and repeated words instantly, plus Studio Sound which uses neural "
+                "networks to remove room echo and background noise, making a cheap phone microphone sound like a professional broadcast studio. "
+                "It offers a generous free tier and creator plans starting around twelve dollars a month."
+            ),
+            "visual_description": "Descript editor interface demonstrating transcript text editing and studio sound noise removal",
+            "image_prompt": "Descript audio video editor UI showing transcript text editing, filler word removal, and studio sound toggle, dark mode",
+            "on_screen_text": [
+                "EDIT VIDEO BY EDITING TEXT TRANSCRIPTS",
+                "1-CLICK REMOVAL OF 'UMS' & 'AHS'",
+                "STUDIO SOUND NEURAL NOISE ISOLATION",
+                "FREE TIER • CREATOR PLANS FROM $12/MO"
+            ],
+            "duration_estimate_sec": 41.0
+        },
+        {
+            "id": 5,
+            "section_type": "tool_4",
+            "title": "Perplexity Pro: Verified Market & Supplier Intelligence",
+            "narration": (
+                "Fourth on our list is Perplexity Pro. When researching competitor pricing, new vendor wholesale terms, or local compliance "
+                "regulations, standard search engines bury you in sponsored ads and outdated blog posts. Perplexity is an answer engine that scans live "
+                "web sources in real time, synthesizing concise answers backed by numbered, clickable citations. You can upload spreadsheets to compare "
+                "supplier quotes, or use its Deep Research feature for multi-step market evaluations. Because every claim includes an exact source link, "
+                "you can verify facts before making expensive business commitments. Perplexity offers a robust free tier, while the twenty dollar Pro "
+                "tier provides access to the latest frontier reasoning models."
+            ),
+            "visual_description": "Perplexity search interface highlighting real-time cited answers and supplier comparison tables",
+            "image_prompt": "Search engine interface showing multi-source citations, supplier comparison breakdown, and verified web sources",
+            "on_screen_text": [
+                "REAL-TIME WEB SEARCH WITH CITED URLS",
+                "COMPARE SUPPLIER QUOTES & CONTRACT TERMS",
+                "DEEP RESEARCH FOR MULTI-STEP MARKET DATA",
+                "FREE SEARCH • PRO REASONING AT $20/MO"
+            ],
+            "duration_estimate_sec": 40.0
+        },
+        {
+            "id": 6,
+            "section_type": "tool_5",
+            "title": "Make.com: Visual No-Code Multi-App AI Automation",
+            "narration": (
+                "Our fifth tool is Make.com. Connecting your everyday business tools—like QuickBooks, Stripe, Gmail, and Google Sheets—is where "
+                "the biggest time savings happen. Make is a visual drag-and-drop automation platform that now features native AI assistants to build "
+                "complex multi-step workflows. For example, when a customer pays an invoice on Stripe, Make can automatically trigger an AI module "
+                "to categorize the purchase, log it into QuickBooks, draft a personalized onboarding email in Gmail, and notify your team on "
+                "Slack—all in under three seconds with zero code. Make offers a free tier with one thousand operations monthly, and entry plans "
+                "starting under ten dollars a month."
+            ),
+            "visual_description": "Make.com visual automation canvas connecting Stripe, QuickBooks, Gmail, and Google Sheets",
+            "image_prompt": "Visual drag-and-drop workflow canvas connecting Stripe, accounting, email, and spreadsheets with AI logic nodes",
+            "on_screen_text": [
+                "DRAG-AND-DROP VISUAL WORKFLOW CANVAS",
+                "CONNECT STRIPE, QUICKBOOKS, GMAIL & SHEETS",
+                "NATIVE AI MODULES FOR PARSING & DRAFTING",
+                "FREE TIER (1,000 OPS/MO) • PLANS FROM $9/MO"
+            ],
+            "duration_estimate_sec": 40.0
+        },
+        {
+            "id": 7,
+            "section_type": "action_plan",
+            "title": "Your 30-Day Practical Implementation Blueprint",
+            "narration": (
+                "Here is your implementation rule of thumb: do not try to adopt all five tools at once. Start by identifying your single biggest "
+                "time bottleneck this week. If you are drowning in paperwork, start with Google NotebookLM. If customer communication and video marketing "
+                "take too long, test Descript. Pick just one tool, spend thirty minutes testing it on a real workflow, and measure the hours you save "
+                "before expanding. All links and resources are in the description below. Which of these five tools will you implement first? Let us "
+                "know in the comments, and subscribe for more practical business automation tutorials."
+            ),
+            "visual_description": "Clean outro summary showing the 30-day single bottleneck implementation rule and call to action",
+            "image_prompt": "Clean actionable roadmap graphic showing Step 1 Bottleneck, Step 2 30-min Test, Step 3 Scale Up, modern outro UI",
+            "on_screen_text": [
+                "RULE OF THUMB: PICK 1 BOTTLENECK TOOL FIRST",
+                "TEST FOR 30 MINUTES ON A REAL WORKFLOW",
+                "MEASURE TIME SAVINGS BEFORE SCALING UP",
+                "ALL LINKS & RESOURCES IN DESCRIPTION BELOW"
+            ],
+            "duration_estimate_sec": 38.0
+        }
+    ]
+
+    return {
+        "tool_name": tool_name,
+        "suggested_title": suggested_title,
+        "description_summary": description_summary,
+        "target_duration_minutes": 4,
+        "sections": sections
+    }
+
 def write_script(topic_data: Dict[str, Any], project_id: Optional[str] = None) -> Dict[str, Any]:
     """Generates and writes an 8-12 minute educational script in both JSON and TXT format.
     
@@ -486,14 +657,18 @@ def write_script(topic_data: Dict[str, Any], project_id: Optional[str] = None) -
     project_id = project_id or topic_data.get("id") or datetime.now().strftime("%Y%m%d_%H%M%S")
     tool_name = topic_data.get("tool_name", "AI Tool")
 
-    logger.info(f"Writing 8-12 minute educational script for '{tool_name}' (Project {project_id})...")
+    logger.info(f"Writing educational script for '{tool_name}' (Project {project_id})...")
 
     # 1. Try Gemini generation if API key is configured
     script_data = generate_script_with_gemini(topic_data)
 
-    # 2. Check for specialized Claude Artifacts curriculum
+    # 2. Check for specialized curricula
     if not script_data or "sections" not in script_data:
-        if "claude" in tool_name.lower() or "artifact" in tool_name.lower():
+        topic_lower = (tool_name + " " + topic_data.get("suggested_title", "") + " " + topic_data.get("angle", "")).lower()
+        if any(k in topic_lower for k in ["small business", "5 practical", "save time", "business owner"]):
+            logger.info("Generating specialized 5 Practical AI Tools for Small Business curriculum (~710 words, ~4 mins)...")
+            script_data = build_small_business_ai_tools_script(topic_data)
+        elif "claude" in tool_name.lower() or "artifact" in tool_name.lower():
             logger.info("Generating specialized in-depth Claude 3.7 Artifacts curriculum (1500+ words)...")
             script_data = build_claude_artifacts_script(topic_data)
         else:
@@ -518,7 +693,9 @@ def write_script(topic_data: Dict[str, Any], project_id: Optional[str] = None) -
         full_narrative_lines.append(f"--- SECTION {sec.get('id', 0)}: {sec.get('title', '')} ---\n{narration}\n")
 
     script_data["topic_id"] = project_id
-    script_data["tool_name"] = tool_name
+    script_data["tool_name"] = script_data.get("tool_name") or tool_name
+    if "suggested_title" not in script_data and topic_data.get("suggested_title"):
+        script_data["suggested_title"] = topic_data["suggested_title"]
     script_data["word_count"] = total_words
     script_data["full_text"] = "\n".join(full_narrative_lines)
     script_data["estimated_total_minutes"] = round(total_words / settings.WORDS_PER_MINUTE, 2)
