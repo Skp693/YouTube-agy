@@ -1,0 +1,18 @@
+{
+  "title": "Quaddis: 3 ATS Resume Mistakes",
+  "output": "../videos/quaddis_ats_short.mp4",
+  "scenes": [
+    {
+      "type": "presenter_pip",
+      "video": "../shorts_assets/flow_presenter_intro.mp4",
+      "background": "../shorts_assets/ats_screen_recording.mp4",
+      "seconds": 8
+    },
+    {
+      "type": "broll",
+      "video": "../shorts_assets/ats_demo.mp4",
+      "narration": "../shorts_assets/approved_narration.wav",
+      "seconds": 37
+    }
+  ]
+}
