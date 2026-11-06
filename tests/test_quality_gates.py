@@ -31,6 +31,8 @@ class QualityGateTests(unittest.TestCase):
     def test_assembly_fails_without_ffmpeg_instead_of_making_fake_mp4(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
+            (root / "scripts").mkdir()
+            (root / "videos").mkdir()
             with patch.object(settings, "VIDEOS_DIR", root / "videos"), \
                  patch.object(settings, "SCRIPTS_DIR", root / "scripts"), \
                  patch("assemble_video.shutil.which", return_value=None), \
