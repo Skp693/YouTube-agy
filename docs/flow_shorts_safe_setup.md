@@ -8,12 +8,12 @@ This is a **review-only** bridge from **already-exported Google Flow MP4s** to a
 3. Store MP4s in `local_assets/` (do not commit these personal media files). Copy `docs/flow_shorts_manifest.example.json` to `docs/flow_shorts_manifest.json` and update its paths.
 4. Run:
    ```bash
-   python3 scripts/flow_shorts_review.py docs/flow_shorts_manifest.json --output videos/quaddis_review.mp4
+   python3 scripts/flow_shorts_review.py docs/flow_shorts_manifest.json --output videos/quaddis_review_1080p.mp4 --mobile-output videos/quaddis_review_iphone.mp4
    ```
 5. Play the output all the way through. Check narration meaning, speech naturalness, lip sync, lighting, cuts, timing, PIP, facts, and licensing. The automatic QA only checks file/stream/duration/resolution; it cannot judge human voice quality.
 6. **Do not publish until human review.**
 
-Output: 1080 × 1920, H.264 + AAC MP4, full-screen and picture-in-picture clips, text overlays, CTA. Source narration audio is preserved; separate scene audio may differ in timbre or script and **must** be reviewed. Input footage resolution below 1080p is upscaled, not magically made sharper.
+Output: full HD 1080 × 1920 and optional phone-friendly 720 × 1280, H.264 + AAC MP4, full-screen and picture-in-picture clips, **topic-specific scene cards**, text overlays, CTA. Supply a `topic` in the JSON manifest; for every `mode: pip` scene provide 1–3 short `cards` strings. The review tool rejects generic fallback cards, missing topics and a timeline exceeding 60 seconds. Source narration audio is preserved; separate scene audio may differ in timbre or script and **must** be reviewed. Input footage resolution below 1080p is upscaled, not magically made sharper.
 
 ## What was fixed on this branch
 - `voiceover.py` now refuses to silently invent synthetic tone audio if narration generation fails.
@@ -32,7 +32,7 @@ Google's official Flow web UI supports Omni Flash 1.2 extending short clips for 
 ```text
 In my existing Skp693/YouTube-agy repo, build a 45-second Quaddis ATS Short
 from 4 human-approved Google Flow MP4 clips saved in local_assets/.
-Use docs/flow_shorts_manifest.json and scripts/flow_shorts_review.py.
+Use docs/flow_shorts_manifest.json and scripts/flow_shorts_review.py; each PIP scene must have relevant cards and the manifest must have a topic.
 Maintain one presenter, 1080x1920, the QUADDIS identity, readable labels
 and a picture-in-picture presenter where appropriate. Do not synthesize
 fake voice, scrape cookies, use a paid API, spend credits, or publish.
