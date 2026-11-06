@@ -74,3 +74,7 @@ logs/*
 Thumbs.db
 *.bmp
 scratch/
+
+local_assets/
+docs/flow_shorts_manifest.json
+videos/*review*.mp4
