@@ -4,6 +4,7 @@ on:
     paths:
       - "scripts/flow_shorts_review.py"
       - "scripts/narration_first_shorts.py"
+      - "scripts/prepare_shorts_manifest.py"
       - "scripts/audio_continuity_qa.py"
       - "scripts/shorts_audio_qc.py"
       - "tests/test_*shorts*.py"
@@ -17,6 +18,7 @@ on:
     paths:
       - "scripts/flow_shorts_review.py"
       - "scripts/narration_first_shorts.py"
+      - "scripts/prepare_shorts_manifest.py"
       - "scripts/audio_continuity_qa.py"
       - "scripts/shorts_audio_qc.py"
       - "tests/test_*shorts*.py"
