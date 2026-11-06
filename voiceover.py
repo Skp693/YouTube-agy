@@ -275,9 +275,13 @@ def generate_voiceover(
         if duration is None:
             duration = synthesize_macos_speech(narration, output_wav, voice=chosen_voice, rate_wpm=rate_wpm)
 
-        # 4. Fallback to harmonic generator if all else fails
+        # Never disguise test tones as production-ready speech.
         if duration is None:
-            duration = synthesize_local_speech_wave(narration, output_wav, target_dur)
+            raise RuntimeError(
+                "No usable speech synthesizer was available for section "
+                f"{sec_id}. Configure a working voice provider or macOS say voice. "
+                "No placeholder audio was generated; video production has stopped."
+            )
 
         section_audio_files.append(output_wav)
 
