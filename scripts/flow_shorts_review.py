@@ -10,6 +10,12 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+try:
+    from scripts.shorts_audio_qc import inspect_audio
+except ModuleNotFoundError:
+    # Support direct python3 scripts/flow_shorts_review.py execution
+    from shorts_audio_qc import inspect_audio
+
 W, H, FPS = 1080, 1920, 30
 
 
@@ -142,11 +148,23 @@ def make_review(manifest, output):
         raise ValueError("Every PIP scene needs topic-specific cards")
     paths = []
     durations = []
+    audio_reports = []
     for scene in scenes:
         path = Path(scene["path"]).expanduser()
         if not path.is_absolute():
             path = (manifest.parent / path).resolve()
         validate_input(path)
+        audio_check = inspect_audio(path)
+        if audio_check["decision"] == "BLOCK":
+            raise RuntimeError(
+                f"Source scene {path.name} failed audio quality preflight: "
+                + ", ".join(audio_check["flags"])
+            )
+        audio_reports.append({
+            "scene": path.name,
+            "decision": audio_check["decision"],
+            "flags": audio_check["flags"],
+        })
         durations.append(float(inspect(path).get("format", {}).get("duration", 0)))
         paths.append(path)
     if sum(durations) + 3 > 60:
@@ -186,6 +204,7 @@ def make_review(manifest, output):
         "duration_seconds": round(length, 2), "resolution": f"{W}x{H}",
         "topic": topic, "brand": data.get("brand", "QUADDIS"),
         "source_clips": len(paths),
+        "audio_preflight": audio_reports,
         "flow_credits_used": 0,
         "warning": "Naturalness, factual content and lip-sync require human review."
     }
