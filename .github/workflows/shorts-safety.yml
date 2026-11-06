@@ -49,6 +49,9 @@ jobs:
       - name: Run Shorts quality and safety tests (no cloud APIs)
         run: |
           python -m unittest discover -s tests -p 'test_*shorts*.py' -v
+      - name: Check dashboard JavaScript syntax
+        run: |
+          node --check static/app.js
       - name: No publishing, uploads or credentials required
         run: |
           echo "Tests use only local generated fixtures; no Google Flow credits or YouTube upload."
