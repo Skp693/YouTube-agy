@@ -20,7 +20,7 @@ class NarrationFirstRenderSmoke(unittest.TestCase):
             subprocess.run([
                 "ffmpeg","-v","error","-y","-f","lavfi","-i",
                 "color=c=0x283d51:s=360x640:r=30",
-                "-f","lavfi","-i","sine=frequency=440:sample_rate=48000",
+                "-f","lavfi","-i","aevalsrc=0.2*sin(2*PI*440*t)*(0.35+0.65*sin(2*PI*0.7*t)^2):s=48000",
                 "-t","8","-c:v","libx264","-preset","ultrafast",
                 "-pix_fmt","yuv420p","-c:a","aac","-shortest",str(video)
             ],check=True)
@@ -44,6 +44,7 @@ class NarrationFirstRenderSmoke(unittest.TestCase):
             }),encoding="utf-8")
             result=render(manifest,output)
             self.assertEqual(result["status"],"REVIEW_ONLY")
+            self.assertEqual(result["audio_continuity"]["decision"], "CONTINUITY_PASS")
             self.assertEqual(result["size"],"720x1280")
             self.assertTrue(output.is_file())
             self.assertGreater(output.stat().st_size,50000)
