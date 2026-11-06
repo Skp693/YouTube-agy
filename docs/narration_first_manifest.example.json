@@ -1,0 +1,38 @@
+{
+  "topic": "How ATS Works — Quaddis Shorts",
+  "brand": "QUADDIS",
+  "narration_source_video": "../local_assets/approved_presenter_45s.mp4",
+  "scenes": [
+    {
+      "start": 0,
+      "end": 7,
+      "media": "../local_assets/approved_presenter_45s.mp4",
+      "mode": "presenter_native",
+      "label": "How ATS Works"
+    },
+    {
+      "start": 7,
+      "end": 20,
+      "media": "../local_assets/quaddis_presenter_reference.jpg",
+      "mode": "pip_still",
+      "label": "Your resume is scanned"
+    },
+    {
+      "start": 20,
+      "end": 36,
+      "media": "../local_assets/ats_ui_demo.mp4",
+      "mode": "broll",
+      "no_visible_speaking_faces": true,
+      "label": "Readable formatting matters"
+    },
+    {
+      "start": 36,
+      "end": 45,
+      "media": "../local_assets/approved_presenter_45s.mp4",
+      "mode": "presenter_native",
+      "label": "Review before applying"
+    }
+  ],
+  "captions": [],
+  "note": "Set accurate caption cues from actual narration; empty captions are allowed only for technical review. All scene boundaries must match the narration duration."
+}
