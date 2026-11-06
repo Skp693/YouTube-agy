@@ -21,7 +21,15 @@ The system cannot certify voice identity, natural speaking style or lip sync sim
    Use --width 1080 for full HD 1080x1920.
 7. Watch end-to-end and separately approve factual accuracy, natural speech, exact words, lip-sync, graphics, caption timing, music/licensing and branding. No public upload before review.
 
-Automatic checks: topic exists, real audio stream, duration 8–60 seconds, scene coverage and chronological order, source media existence, matching native-presenter source and timecodes, overlapping captions blocked, MP4 streams and output dimensions checked.
+Automatic checks: topic exists, real audio stream, duration 8–60 seconds, scene coverage and chronological order, source media existence, matching native-presenter source and timecodes, overlapping captions blocked, MP4 streams and output dimensions checked. **New:** the final MP4 audio is decoded and compared to the approved narration signal (20ms energy envelope, allowing up to 100ms codec offset and 0.35s duration difference). If its similarity is below 0.90 the output MP4 is rejected. Passing this check only demonstrates technical timing continuity, not natural voice, transcript accuracy, or lip-sync.
+
+Verify any previously rendered artifact separately:
+
+```bash
+python3 scripts/audio_continuity_qa.py local_assets/approved_presenter_45s.mp4 videos/audio_first_review.mp4 --report videos/audio_continuity_report.json
+```
+
+For the real 14.5-second presenter reference, the review prototype comparison reached **0.9994 similarity**, **0ms offset** and **-0.021 seconds duration difference**. A different, failed 11-second recording was correctly rejected. These are measured properties of those specific inputs only; they do not prove the full 45-second end-to-end system is ready.
 
 Caveats: No Google Flow generation, MCP login, Chrome cookie access, paid API call, voice cloning, perfect lip-sync guarantee or automatic YouTube publishing. This is an offline assembly and validation module.
 
