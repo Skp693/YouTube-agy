@@ -67,7 +67,12 @@ def render_scene(src, target, scene, brand, workdir, index):
                 "-i", str(src), "-vf", video_filter,
                 "-map", "0:v:0", "-map", "0:a:0"]
     elif mode == "pip":
-        lines = ["READABLE RESUME", "CLEAR EXPERIENCE", "HUMAN REVIEW"]
+        lines = scene.get("cards") or []
+        if not isinstance(lines, list) or not 1 <= len(lines) <= 3:
+            raise ValueError("PIP scene requires 1–3 topic-specific cards")
+        lines = [str(x).replace("\\n", " ").strip()[:32] for x in lines]
+        if not all(lines):
+            raise ValueError("PIP cards cannot be blank")
         cards = []
         for i, line in enumerate(lines):
             fp = write_text(workdir, f"card_{index}_{i}.txt", line)
@@ -127,16 +132,25 @@ def make_review(manifest, output):
     if not shutil.which("ffmpeg") or not shutil.which("ffprobe"):
         raise RuntimeError("FFmpeg and FFprobe required; fake video files forbidden")
     data = json.loads(manifest.read_text(encoding="utf-8"))
+    topic = data.get("topic", "")
+    if not isinstance(topic, str) or not topic.strip():
+        raise ValueError("A topic is required to match visuals to the subject")
     scenes = data.get("scenes") or []
     if not 3 <= len(scenes) <= 12:
         raise ValueError("Supply 3 to 12 pre-generated clips")
+    if any(x.get("mode") == "pip" and not x.get("cards") for x in scenes):
+        raise ValueError("Every PIP scene needs topic-specific cards")
     paths = []
+    durations = []
     for scene in scenes:
         path = Path(scene["path"]).expanduser()
         if not path.is_absolute():
             path = (manifest.parent / path).resolve()
         validate_input(path)
+        durations.append(float(inspect(path).get("format", {}).get("duration", 0)))
         paths.append(path)
+    if sum(durations) + 3 > 60:
+        raise ValueError("Short would exceed 60 seconds; trim or use fewer clips")
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="flow_shorts_") as folder:
         work = Path(folder)
@@ -170,6 +184,8 @@ def make_review(manifest, output):
     return {
         "status": "REVIEW_ONLY_NOT_PUBLISHED", "output": str(output),
         "duration_seconds": round(length, 2), "resolution": f"{W}x{H}",
+        "topic": topic, "brand": data.get("brand", "QUADDIS"),
+        "source_clips": len(paths),
         "flow_credits_used": 0,
         "warning": "Naturalness, factual content and lip-sync require human review."
     }
@@ -180,5 +196,26 @@ if __name__ == "__main__":
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--output", type=Path,
                         default=Path("videos/flow_shorts_review.mp4"))
+    parser.add_argument("--mobile-output", type=Path,
+                        help="Optional iPhone-compatible 720x1280 preview")
     options = parser.parse_args()
-    print(json.dumps(make_review(options.manifest, options.output), indent=2))
+    report = make_review(options.manifest, options.output)
+    if options.mobile_output:
+        options.mobile_output.parent.mkdir(parents=True, exist_ok=True)
+        command([
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+            "-i", str(options.output), "-vf", "scale=720:1280",
+            "-c:v", "libx264", "-preset", "veryfast",
+            "-crf", "26", "-profile:v", "main", "-level", "3.1",
+            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k",
+            "-movflags", "+faststart", str(options.mobile_output)
+        ])
+        mobile = inspect(options.mobile_output)
+        streams = mobile.get("streams", [])
+        v = [x for x in streams if x.get("codec_type") == "video"]
+        a = [x for x in streams if x.get("codec_type") == "audio"]
+        if not v or not a or v[0].get("width") != 720 or v[0].get("height") != 1280:
+            options.mobile_output.unlink(missing_ok=True)
+            raise RuntimeError("Mobile output failed stream/dimension QA")
+        report["mobile_preview"] = str(options.mobile_output)
+    print(json.dumps(report, indent=2))
