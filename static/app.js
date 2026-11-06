@@ -47,6 +47,11 @@ const elements = {
   
   // Generation & Monitor
   startPipelineBtn: document.getElementById("start-pipeline-btn"),
+  shortsReviewManifest: document.getElementById("shorts-review-manifest"),
+  shortsReviewBtn: document.getElementById("shorts-review-btn"),
+  shortsReviewStatus: document.getElementById("shorts-review-status"),
+  shortsReviewVideo: document.getElementById("shorts-review-video"),
+  shortsReviewLink: document.getElementById("shorts-review-link"),
   currentStageLabel: document.getElementById("current-stage-label"),
   progressPercent: document.getElementById("progress-percent"),
   progressBarFill: document.getElementById("progress-bar-fill"),
@@ -274,6 +279,85 @@ function setupPipelineLauncher() {
       appendConsoleLog("ERR", `Launch failed: ${err}`);
       elements.startPipelineBtn.disabled = false;
       elements.startPipelineBtn.innerHTML = "🎬 Create My Video Now (One-Click)";
+    }
+  });
+}
+
+function setupShortsReview() {
+  const btn = elements.shortsReviewBtn;
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    const manifest = elements.shortsReviewManifest.value.trim();
+    const shortsReviewStatus = elements.shortsReviewStatus;
+    const shortsReviewVideo = elements.shortsReviewVideo;
+    const shortsReviewLink = elements.shortsReviewLink;
+    if (!/^[A-Za-z][A-Za-z0-9_-]{0,63}\\.json$/.test(manifest)) {
+      shortsReviewStatus.textContent = "Use a simple .json manifest filename from the docs folder.";
+      return;
+    }
+
+    btn.disabled = true;
+    shortsReviewStatus.textContent = "Checking approved local assets before starting…";
+    shortsReviewVideo.style.display = "none";
+    shortsReviewLink.style.display = "none";
+    shortsReviewVideo.removeAttribute("src");
+
+    try {
+      const response = await fetch("/api/shorts/start", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({manifest})
+      });
+      const data = await response.json();
+      if (!response.ok || !data.job_id) {
+        throw new Error(data.error || "Shorts preview cannot start");
+      }
+      shortsReviewStatus.textContent = "Rendering review-only MP4. No upload will happen.";
+      const jobId = data.job_id;
+      let polls = 0;
+      const timer = setInterval(async () => {
+        try {
+          polls += 1;
+          if (polls > 600) {
+            clearInterval(timer);
+            btn.disabled = false;
+            shortsReviewStatus.textContent = "Status polling expired. Check job logs; no upload was attempted.";
+            return;
+          }
+          const resp = await fetch(`/api/pipeline/job/${encodeURIComponent(jobId)}`);
+          if (!resp.ok) throw new Error("Could not read job status");
+          const job = await resp.json();
+          if (job.status === "running") {
+            shortsReviewStatus.textContent = "Rendering and checking narration continuity…";
+          } else if (job.status === "completed") {
+            clearInterval(timer);
+            btn.disabled = false;
+            const url = job.summary && job.summary.video_url;
+            if (!url || !/^\\/media\\/video\\/shorts_[A-Za-z0-9]+$/.test(url)) {
+              shortsReviewStatus.textContent = "Render returned no valid review video link.";
+              return;
+            }
+            shortsReviewVideo.src = url;
+            shortsReviewVideo.style.display = "block";
+            shortsReviewVideo.load();
+            shortsReviewLink.href = url;
+            shortsReviewLink.style.display = "inline-block";
+            shortsReviewStatus.textContent = "Review MP4 ready. Voice naturalness, captions and lip-sync still need approval.";
+          } else if (job.status === "failed" || job.status === "not_found") {
+            clearInterval(timer);
+            btn.disabled = false;
+            shortsReviewStatus.textContent = "Render stopped: " + (job.error || "Job was not found");
+          }
+        } catch (err) {
+          clearInterval(timer);
+          btn.disabled = false;
+          shortsReviewStatus.textContent = "Could not check render status: " + err.message;
+        }
+      }, 2000);
+    } catch (err) {
+      btn.disabled = false;
+      shortsReviewStatus.textContent = "Could not start review: " + err.message;
     }
   });
 }
@@ -754,6 +838,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNavigation();
   setupBlueprintActions();
   setupPipelineLauncher();
+  setupShortsReview();
   setupComplianceActions();
   setupCopyButtons();
 
