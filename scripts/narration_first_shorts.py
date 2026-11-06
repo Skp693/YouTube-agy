@@ -14,6 +14,12 @@ import tempfile
 import textwrap
 from pathlib import Path
 
+try:
+    from scripts.audio_continuity_qa import compare_audio
+except ModuleNotFoundError:
+    # Support direct python3 scripts/narration_first_shorts.py execution
+    from audio_continuity_qa import compare_audio
+
 DEFAULT_FPS = 30
 
 
@@ -169,9 +175,19 @@ def render(manifest, output, width=720, height=1280):
     if not vs or not au or vs[0]["width"] != width or vs[0]["height"] != height or abs(real-duration) > 0.5:
         output.unlink(missing_ok=True)
         raise RuntimeError("Rendered output failed QA")
+    # Prove the finished MP4 retains the approved narration's audio activity.
+    # Technical continuity is NOT proof of natural voice or lip synchronization.
+    continuity = compare_audio(source, output)
+    if continuity["decision"] != "CONTINUITY_PASS":
+        output.unlink(missing_ok=True)
+        raise RuntimeError(
+            "Rendered output narration differs from the approved master: "
+            + continuity["reason"]
+        )
     return {"status": "REVIEW_ONLY", "output": str(output), "topic": data["topic"],
             "duration": round(real, 2), "size": f"{width}x{height}", "single_narration": True,
             "captions_provided": len(data.get("captions", [])),
+            "audio_continuity": continuity,
             "not_verified": "Natural voice, caption wording, and consented lip-sync require human review"}
 
 
