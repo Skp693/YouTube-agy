@@ -50,6 +50,9 @@ class TestFlowShortsSafety(unittest.TestCase):
             with mock.patch.object(shorts.shutil, "which", return_value="/usr/bin/ffmpeg"), \
                  mock.patch.object(shorts, "validate_input"), \
                  mock.patch.object(shorts, "inspect", return_value=info), \
+                 mock.patch.object(shorts, "inspect_audio", return_value={
+                     "decision": "HUMAN_REVIEW_REQUIRED", "flags": []
+                 }), \
                  mock.patch.object(shorts, "command") as command:
                 with self.assertRaisesRegex(ValueError, "60 seconds"):
                     shorts.make_review(manifest, Path(folder) / "output.mp4")
