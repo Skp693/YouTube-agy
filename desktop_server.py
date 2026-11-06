@@ -13,6 +13,7 @@ import json
 import time
 import mimetypes
 import threading
+import secrets
 from pathlib import Path
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from socketserver import ThreadingMixIn
@@ -128,6 +129,10 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
                 self._send_json({"status": "updated", "variation": variation})
             else:
                 self.send_error(404, "Thumbnail variation not found")
+            return
+
+        if path == "/api/shorts/start":
+            self._handle_start_shorts(body)
             return
 
         if path == "/api/pipeline/start":
@@ -329,6 +334,59 @@ class DesktopDashboardHandler(SimpleHTTPRequestHandler):
             has_ai_disclosure=has_ai_disclosure
         )
         self._send_json({"project_id": data.get("project_id"), "audit": audit})
+
+    def _handle_start_shorts(self, body: Dict[str, Any]) -> None:
+        """Start an offline, review-only Short using an approved local manifest.
+
+        A manifest filename is accepted; never accept arbitrary client paths,
+        Flow cookies, Google credentials or any automatic upload settings.
+        """
+        from scripts import shorts_dashboard
+
+        if not shorts_dashboard.origin_is_local(self.headers.get("Origin")):
+            self._send_json({"error": "Shorts preview requires a local dashboard origin"}, status=403)
+            return
+
+        try:
+            name = body.get("manifest", "narration_first_manifest.json")
+            manifest = shorts_dashboard.get_local_manifest(settings.BASE_DIR, name)
+        except (FileNotFoundError, ValueError, TypeError) as exc:
+            self._send_json({"error": str(exc)}, status=422)
+            return
+
+        if any(job.get("mode") == "shorts" and job.get("status") == "running"
+               for job in ACTIVE_JOBS.values()):
+            self._send_json({"error": "Another Shorts preview is rendering"}, status=409)
+            return
+
+        job_id = "shorts_" + secrets.token_hex(6)
+        ACTIVE_JOBS[job_id] = {
+            "job_id": job_id,
+            "mode": "shorts",
+            "status": "running",
+            "stage": 5,
+            "stage_name": "Rendering approved local Shorts media",
+            "progress_percent": 15,
+            "start_time": time.time(),
+            "logs": ["Rendering local review MP4; no cloud generation or upload."]
+        }
+
+        def worker():
+            job = ACTIVE_JOBS[job_id]
+            try:
+                summary = shorts_dashboard.run_review(settings.BASE_DIR, manifest.name, job_id)
+                job["status"] = "completed"
+                job["summary"] = summary
+                job["progress_percent"] = 100
+                job["logs"].append("Review-only MP4 produced. Human voice/lip-sync approval still required.")
+            except Exception as exc:
+                logger.error("Shorts review %s failed: %s", job_id, exc)
+                job["status"] = "failed"
+                job["error"] = str(exc)
+                job["logs"].append("Shorts review stopped; no upload performed.")
+
+        threading.Thread(target=worker, daemon=True).start()
+        self._send_json({"job_id": job_id, "status": "started", "mode": "review_only"}, status=202)
 
     def _handle_start_pipeline(self, body: Dict[str, Any]) -> None:
         """Launches pipeline generation in a background worker thread."""
