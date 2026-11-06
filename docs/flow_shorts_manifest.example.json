@@ -1,0 +1,37 @@
+{
+  "brand": "QUADDIS",
+  "cta": "Get a free CV audit",
+  "scenes": [
+    {
+      "path": "../local_assets/flow_export_01.mp4",
+      "label": "How ATS works",
+      "mode": "full"
+    },
+    {
+      "path": "../local_assets/flow_export_02.mp4",
+      "label": "Step 1: Resume scanning",
+      "mode": "pip",
+      "cards": [
+        "SIMPLE RESUME FORMAT",
+        "MATCH ROLE KEYWORDS",
+        "CLEAR SECTION HEADINGS"
+      ]
+    },
+    {
+      "path": "../local_assets/flow_export_03.mp4",
+      "label": "Step 2: Human review",
+      "mode": "full"
+    },
+    {
+      "path": "../local_assets/flow_export_04.mp4",
+      "label": "Step 3: Keep it readable",
+      "mode": "pip",
+      "cards": [
+        "REAL SKILLS & EXPERIENCE",
+        "CHECK FOR TYPOS",
+        "TAILOR TO THE JOB"
+      ]
+    }
+  ],
+  "topic": "How ATS Works: 3 Resume Tips"
+}

@@ -15,6 +15,7 @@ import struct
 import math
 import urllib.request
 import urllib.error
+from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 
@@ -275,9 +276,26 @@ def generate_voiceover(
         if duration is None:
             duration = synthesize_macos_speech(narration, output_wav, voice=chosen_voice, rate_wpm=rate_wpm)
 
-        # 4. Fallback to harmonic generator if all else fails
+        # Never replace failed narration with oscillator tones: that created robot audio.
+        # Fail closed so no silent/fake output reaches the renderer or YouTube.
         if duration is None:
-            duration = synthesize_local_speech_wave(narration, output_wav, target_dur)
+            raise RuntimeError(
+                f"Real speech synthesis failed for section {sec_id}. "
+                "Install/configure an authorized speech voice, or provide a recorded narration. "
+                "The pipeline will not generate fake robotic tones."
+            )
+        if not output_wav.is_file() or output_wav.stat().st_size <= 44:
+            raise RuntimeError(
+                f"Speech synthesis returned no valid WAV audio for section {sec_id}. "
+                "Check provider format and audio conversion before rendering."
+            )
+        try:
+            with wave.open(str(output_wav), "rb") as wf:
+                if wf.getnframes() <= 0 or wf.getframerate() <= 0:
+                    raise ValueError("Empty audio")
+                duration = round(wf.getnframes() / float(wf.getframerate()), 2)
+        except (wave.Error, ValueError, EOFError) as exc:
+            raise RuntimeError(f"Invalid speech WAV for section {sec_id}: {exc}") from exc
 
         section_audio_files.append(output_wav)
 

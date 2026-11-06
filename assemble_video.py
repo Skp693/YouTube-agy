@@ -207,13 +207,11 @@ def assemble_video(
             logger.error(f"FFmpeg error: {e.stderr.decode('utf-8', errors='ignore')}")
             raise
     else:
-        logger.warning(
-            f"FFmpeg binary not found in PATH. Created render script at {render_script_path}. "
-            f"Generating placeholder MP4 container to complete dry-run."
+        logger.error("FFmpeg binary is unavailable; real video rendering cannot continue.")
+        raise RuntimeError(
+            "FFmpeg is required to render a real MP4. "
+            "Install FFmpeg and retry; placeholder videos are forbidden."
         )
-        # Create valid mock mp4 marker
-        with open(output_mp4, "wb") as f:
-            f.write(b"\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00isommp42\x00\x00\x00\x08free")
 
     return {
         "project_id": project_id,

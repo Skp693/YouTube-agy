@@ -14,6 +14,8 @@ import os
 import sys
 import json
 import time
+import shutil
+import subprocess
 from pathlib import Path
 from typing import Optional, Dict, Any
 
@@ -70,6 +72,29 @@ def get_authenticated_youtube_service():
 
     return build("youtube", "v3", credentials=creds)
 
+def validate_real_video_for_upload(video_path: Path) -> None:
+    """Fail closed: reject fake/empty MP4 or missing audio before live or dry-run upload."""
+    ffprobe = shutil.which("ffprobe")
+    if not ffprobe:
+        raise RuntimeError("FFprobe is required to validate real video before upload")
+    try:
+        result = subprocess.run(
+            [ffprobe, "-v", "error", "-show_streams", "-show_format",
+             "-of", "json", str(video_path)],
+            capture_output=True, text=True, check=True, timeout=30
+        )
+        details = json.loads(result.stdout)
+        types = {stream.get("codec_type") for stream in details.get("streams", [])}
+        duration = float(details.get("format", {}).get("duration", 0))
+        if not {"video", "audio"}.issubset(types) or duration <= 1.0:
+            raise ValueError("Invalid MP4: video + audio streams and duration required")
+        if video_path.stat().st_size < 1024:
+            raise ValueError("Invalid MP4: file too small to be playable media")
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, ValueError,
+            json.JSONDecodeError, OSError) as exc:
+        raise RuntimeError(f"Invalid video media; upload blocked: {exc}") from exc
+
+
 def upload_to_youtube(
     project_id: str,
     privacy: Optional[str] = None,
@@ -96,6 +121,9 @@ def upload_to_youtube(
         raise FileNotFoundError(f"Video file not found at: {video_path}")
     if not metadata_path.exists():
         raise FileNotFoundError(f"Metadata file not found at: {metadata_path}")
+
+    # Even --dry-run must not mistake a placeholder MP4 for a real video.
+    validate_real_video_for_upload(video_path)
 
     with open(metadata_path, "r", encoding="utf-8") as f:
         meta = json.load(f)
@@ -152,7 +180,8 @@ def upload_to_youtube(
         },
         "status": {
             "privacyStatus": privacy_status,
-            "selfDeclaredMadeForKids": False
+            "selfDeclaredMadeForKids": False,
+            "containsSyntheticMedia": bool(ai_disclosure)
         }
     }
 

@@ -74,3 +74,15 @@ logs/*
 Thumbs.db
 *.bmp
 scratch/
+
+local_assets/
+docs/flow_shorts_manifest.json
+videos/*review*.mp4
+
+docs/narration_first_manifest.json
+docs/*_prepared_manifest.json
+!scripts/prepare_shorts_manifest.py
+
+local_models/
+.venv-kokoro/
+**/commercial_voice_candidate/
