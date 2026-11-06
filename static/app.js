@@ -292,7 +292,8 @@ function setupShortsReview() {
     const shortsReviewStatus = elements.shortsReviewStatus;
     const shortsReviewVideo = elements.shortsReviewVideo;
     const shortsReviewLink = elements.shortsReviewLink;
-    if (!/^[A-Za-z][A-Za-z0-9_-]{0,63}\\.json$/.test(manifest)) {
+    if (!manifest.endsWith(".json") || manifest.includes("..") ||
+        !/^[A-Za-z][A-Za-z0-9_.-]*$/.test(manifest)) {
       shortsReviewStatus.textContent = "Use a simple .json manifest filename from the docs folder.";
       return;
     }
@@ -334,7 +335,8 @@ function setupShortsReview() {
             clearInterval(timer);
             btn.disabled = false;
             const url = job.summary && job.summary.video_url;
-            if (!url || !/^\\/media\\/video\\/shorts_[A-Za-z0-9]+$/.test(url)) {
+            if (!url || !url.startsWith("/media/video/shorts_") ||
+                url.includes("..") || url.includes("?") || url.includes("#")) {
               shortsReviewStatus.textContent = "Render returned no valid review video link.";
               return;
             }
