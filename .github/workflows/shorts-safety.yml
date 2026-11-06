@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "scripts/flow_shorts_review.py"
+      - "scripts/narration_first_shorts.py"
       - "scripts/shorts_audio_qc.py"
       - "tests/test_*shorts*.py"
       - "voiceover.py"
@@ -14,6 +15,7 @@ on:
       - "fix/shorts-quality-*"
     paths:
       - "scripts/flow_shorts_review.py"
+      - "scripts/narration_first_shorts.py"
       - "scripts/shorts_audio_qc.py"
       - "tests/test_*shorts*.py"
       - "voiceover.py"
