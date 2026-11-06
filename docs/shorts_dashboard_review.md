@@ -13,6 +13,27 @@ This feature was added on branch `fix/shorts-quality-2026-11` / Draft PR #3. It 
 8. On success, the vertical 720 × 1280 preview plays inside the dashboard; download it if the browser viewer has playback issues. Output is saved to `videos/shorts_<id>_final.mp4` on the Mac. The server exposes it locally at `/media/video/shorts_<id>`.
 9. Play all scenes and manually verify voice naturalness, audio content, lip-sync of visible presenter, source rights, captions, branding and factual correctness before ever publishing.
 
+## Faster setup: prepare scene timing automatically (new)
+
+You can create a review manifest without editing JSON manually. This works **only with existing narration and visuals**. It does not create or verify a new natural voice, and it does not know which exact words occur at each time.
+
+From the repository root on your Mac, after placing approved clips/portraits in `local_assets/`:
+
+```bash
+python3 scripts/prepare_shorts_manifest.py \
+  --topic "How ATS Works — 3 Resume Tips" \
+  --narration "local_assets/approved_presenter_45s.mp4" \
+  --asset "local_assets/resume_layout.png::Keep formatting readable::broll" \
+  --asset "local_assets/presenter_portrait.jpg::Match skills truthfully::pip_still" \
+  --output "docs/narration_first_manifest.json"
+```
+
+**Replace filenames with real approved recordings and graphics** before running. The tool checks that each source exists, uses FFprobe to obtain actual master-audio duration, creates exact contiguous scene boundaries, and adds the same-source presenter only at the beginning/end of a source video. If you provide an external WAV/MP3 narrator instead, no moving talking-head shots are inserted. It NEVER infers spoken text, captions, voice quality or word-aligned timings.
+
+The command intentionally refuses to overwrite a previous manifest. For a different Short choose a new filename in `docs/` and enter that filename in the dashboard. Raw presenter media and prepared manifests are ignored by Git.
+
+If you provide a moving B-roll video, use `--verified-nontalking-video` **only after** visually confirming it contains no visibly speaking faces; otherwise the tool rejects that asset. Recheck the proposed scene cuts against the actual spoken words before pressing Create Shorts Review MP4. For accuracy, create topic-relevant visuals and exact caption cues separately.
+
 ## Built-in boundaries
 - Accepts only ordinary .json filename in this repo's `docs/` directory — no arbitrary path from the dashboard request, directory traversal, or linked manifest.
 - The render endpoint runs only from a localhost browser origin, and refuses concurrent Shorts jobs.
