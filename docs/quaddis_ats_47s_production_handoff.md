@@ -1,3 +1,17 @@
+## 2026-11-06 UPDATE — Narrated MP4 now generated
+
+The user supplied the **exact original HeyGen Joanna MP3** (47.7518 seconds) as a chat attachment. The private media pack has now been finalized **in the conversation container**, not uploaded to this public Git repository:
+
+- `quaddis_ats_review_with_joanna_voice.mp4`: actual 47.7667-second 720×1280 H.264/AAC narrated review video, eight ATS animated scenes, 15 captions based on original provider word timings, and static consented presenter portrait PIP.
+- `quaddis_ats_review_1080p_upscaled.mp4`: 1080×1920 **upscaled** review copy, not native 1080 animation.
+- `assets/quaddis_ats_narration.mp3`: original user-supplied narration (private pack only).
+- `narrated_final_technical_qa.json`: both MP4s full-decoded without FFmpeg errors, streams and durations verified; audio envelope similarity 0.9992, 0ms offset against original MP3. A high signal match does NOT verify natural speaking quality or facial lip-sync.
+- `Quaddis_ATS_Narrated_Shorts_Production_Pack_47s.zip`: 49 files, including local dashboard installer, script, assets, timings and tests. ZIP integrity passed. 8/8 local bundle tests passed.
+
+**Important licensing:** HeyGen Free-plan generated output is for personal, noncommercial and internal evaluation only under https://www.heygen.com/terms; do not publish this Joanna-voice review to monetize Quaddis. For commercial use, obtain a commercially licensed or original recording and redo real caption alignment. Official Quaddis logo/website and animated-avatar lip sync are also NOT approved or verified. No Google Flow/MCP credits or YouTube uploads were used. Draft PR remains unmerged and no private media were committed.
+
+---
+
 # Quaddis ATS Short — 47.75-second production asset handoff (2026-11-06)
 
 **Status: PRIVATE REVIEW ASSETS READY, not monetization-ready and not published.**
