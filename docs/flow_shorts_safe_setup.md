@@ -10,8 +10,13 @@ This is a **review-only** bridge from **already-exported Google Flow MP4s** to a
    ```bash
    python3 scripts/flow_shorts_review.py docs/flow_shorts_manifest.json --output videos/quaddis_review_1080p.mp4 --mobile-output videos/quaddis_review_iphone.mp4
    ```
-5. Play the output all the way through. Check narration meaning, speech naturalness, lip sync, lighting, cuts, timing, PIP, facts, and licensing. The automatic QA only checks file/stream/duration/resolution; it cannot judge human voice quality.
-6. **Do not publish until human review.**
+5. Run offline audio preflight on each source and save an honest report:
+   ```bash
+   python3 scripts/shorts_audio_qc.py local_assets/*.mp4 --report videos/shorts_audio_report.json
+   ```
+   The Shorts renderer now calls this gate automatically and **blocks silence and oscillator-style fallback tones**. A passing check is labeled `HUMAN_REVIEW_REQUIRED`, never "natural voice verified."
+6. Play the output all the way through. Check narration meaning, speech naturalness, lip sync, lighting, cuts, timing, PIP, facts, and licensing. The automatic QA only checks file/stream/duration/resolution; it cannot judge human voice quality.
+7. **Do not publish until human review.**
 
 Output: full HD 1080 × 1920 and optional phone-friendly 720 × 1280, H.264 + AAC MP4, full-screen and picture-in-picture clips, **topic-specific scene cards**, text overlays, CTA. Supply a `topic` in the JSON manifest; for every `mode: pip` scene provide 1–3 short `cards` strings. The review tool rejects generic fallback cards, missing topics and a timeline exceeding 60 seconds. Source narration audio is preserved; separate scene audio may differ in timbre or script and **must** be reviewed. Input footage resolution below 1080p is upscaled, not magically made sharper.
 
@@ -48,3 +53,13 @@ playable MP4 exists. Give me the preview and an honest quality checklist.
 - Audit third-party license terms, synthetic-media labeling, social-platform policies, and any Google quota changes.
 
 This starter is not a one-prompt Flow generation system. Flow creation is deliberately manual until safe, supported account authorization exists.
+
+## Natural narration and avatar lip-sync — next production gate
+- **Audio-first:** write and fact-check one 40–50-second English script. Record one complete natural voice take, or use one permitted voice for the entire short. Do not switch narrators between Flow scenes.
+- Generate character talking-head scenes only for the **exact words** that this voice actually speaks. Reuse the consented avatar references and consistent character voice. Inspect lips, facial expressions and timing for each shot before using it.
+- Put explanations/screenshots and PIP in the remaining scenes. Don't forcibly replace the audio of visible talking heads with unrelated narration: that creates obvious lip-sync errors.
+- If a clip contains only background graphics, mute its Flow speech and use the single approved narrator for that portion. This audio-first scene assembly is **planned**, not yet implemented.
+- Check that spoken words match captions; the old equal-time text splitting is not true word alignment. Use timestamps from real audio/transcription, then proofread them.
+- Mark a Short review-ready **only after** the speaker voice, lip-sync, visuals, accurate script, branding, audio level, rights and 9:16 playback have all been checked.
+
+Automation limits: A validated FFmpeg export is not evidence of an end-to-end one-prompt Flow generation, and Google AI Pro does not equal unrestricted free API usage. No browser extension with Google session access is authorized by this setup.
