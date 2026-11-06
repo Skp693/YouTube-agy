@@ -330,20 +330,44 @@
           <div class="launch-action-box">
             <button id="start-pipeline-btn" class="btn btn-primary btn-block btn-hero">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              🎬 Create My Video Now (One-Click)
+              🎬 Create Long Video (Original Pipeline)
             </button>
             <div class="launch-note">
-              ⏱ Takes about 1–2 minutes. Runs completely offline on your Mac with $0 cost.
+              Long-video generator. Runtime and quality depend on installed tools; review before upload.
             </div>
           </div>
 
-          <!-- YouTube Monetization Safety Badge -->
+          <!-- Local, review-only 9:16 Shorts workflow -->
+          <section class="launch-action-box" id="shorts-review-panel" aria-label="Shorts review">
+            <h3 style="margin:0 0 8px 0;font-size:1rem">📱 Shorts Review — Approved Media</h3>
+            <p class="launch-note" style="margin-bottom:14px">
+              Review only: use one approved narrator recording and scene assets already on this Mac.
+              This button does not generate new Flow clips, spend credits, upload videos or publish.
+              First copy the example manifest to docs/narration_first_manifest.json and fill its paths.
+            </p>
+            <label class="form-label" for="shorts-review-manifest">Prepared manifest filename inside docs/</label>
+            <input id="shorts-review-manifest" class="form-input" type="text"
+                   value="narration_first_manifest.json" maxlength="69"
+                   aria-describedby="shorts-review-status" />
+            <button id="shorts-review-btn" class="btn btn-primary btn-block"
+                    style="margin-top:12px">Create Shorts Review MP4</button>
+            <p id="shorts-review-status" role="status" aria-live="polite"
+               style="font-size:0.78rem;margin:10px 0;color:var(--text-muted)">
+              Needs approved source narration, scene timing and media files before starting.
+            </p>
+            <video id="shorts-review-video" controls playsinline preload="metadata"
+                   style="display:none;width:100%;max-height:380px;border-radius:12px"></video>
+            <a id="shorts-review-link" href="#" style="display:none;font-size:0.83rem"
+               target="_blank" rel="noopener">Open Shorts MP4 for review</a>
+          </section>
+
+          <!-- Editorial safeguards rather than monetization guarantees -->
           <div class="monetization-badge-card">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span class="safe-check-icon">✓</span>
               <div>
-                <div style="font-weight: 600; font-size: 0.88rem; color: #34d399;">Safe for YouTube Monetization</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted);">Content is checked for advertiser-friendly guidelines, original commentary & clear chapters.</div>
+                <div style="font-weight: 600; font-size: 0.88rem; color: #34d399;">Publishing requires human review</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Automated checks do not guarantee monetization, voice naturalness, factual accuracy or avatar lip-sync.</div>
               </div>
             </div>
           </div>
@@ -356,7 +380,7 @@
             </div>
 
             <div id="console-stream" class="console-box">
-              <div class="console-entry"><span class="console-time">[READY]</span> Studio is ready. All Mac audio and video tools are working.</div>
+              <div class="console-entry"><span class="console-time">[READY]</span> Studio is ready. Check dependencies and configure approved media before rendering.</div>
               <div class="console-entry"><span class="console-time">[READY]</span> Enter a topic on the left or click "Pick a Trending AI Tool" to begin!</div>
             </div>
           </div>
